@@ -1,2 +1,13 @@
 DIRT
 DCI Implementation in Ruby by Tenjin
+# :main:README
+# :title:Dirt
+# = \Dirt
+# \Dirt (DCI Implemented in Ruby by Tenjin) is a framework for creating DCI applications.
+#
+# Author:: {Tenjin Inc.}[link:http://www.Tenjin.ca]
+# Copyright:: Copyright (c) 2014
+# RDOC Generation Command:: <tt>rdoc -main README lib/ README</tt>
+#
+# == Usage
+# To grow things in Dirt, create Contexts for your application, and use Roles to operate on your model objects.
