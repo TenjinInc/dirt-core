@@ -16,3 +16,6 @@
 
 # Rubymine stuff
 .idea
+
+# not much point in saving each gem.
+*.gem
