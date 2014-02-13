@@ -1,0 +1,18 @@
+Wed, 12 Feb 2014 21:01:37 -0700
+./spec/behaviours/crud_schedule_spec.rb	Wed, 12 Feb 2014 20:54:18 -0700
+./spec/spec_helper.rb	Wed, 12 Feb 2014 12:45:35 -0700
+./spec/isolations/persisting_spec.rb	Wed, 12 Feb 2014 20:56:19 -0700
+./spec/isolations/role_spec.rb	Wed, 12 Feb 2014 12:45:35 -0700
+./spec/isolations/persister_spec.rb	Wed, 12 Feb 2014 20:55:56 -0700
+./spec/test_persister.rb	Wed, 12 Feb 2014 12:45:35 -0700
+./Gemfile	Wed, 12 Feb 2014 20:56:49 -0700
+./lib/dirt.rb	Wed, 12 Feb 2014 20:57:10 -0700
+./lib/roles/persisting.rb	Wed, 12 Feb 2014 12:45:35 -0700
+./lib/roles/validating.rb	Wed, 12 Feb 2014 12:45:35 -0700
+./lib/roles/validation/block_validator.rb	Wed, 12 Feb 2014 12:45:35 -0700
+./lib/roles/validation/self_existence_validator.rb	Wed, 12 Feb 2014 12:45:35 -0700
+./lib/roles/validation/existence_validator.rb	Wed, 12 Feb 2014 12:45:35 -0700
+./lib/roles/validation/presence_validator.rb	Wed, 12 Feb 2014 12:45:35 -0700
+./lib/roles/role.rb	Wed, 12 Feb 2014 12:45:35 -0700
+./lib/persisters/persister.rb	Wed, 12 Feb 2014 20:57:44 -0700
+./README	Wed, 12 Feb 2014 20:46:28 -0700

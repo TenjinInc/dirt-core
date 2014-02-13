@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>class Persister - RDoc Documentation</title>
+
+<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="./index.html">Home</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/persisters/persister.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link">Object
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-c-clear">::clear</a>
+    
+    <li><a href="#method-c-for">::for</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="./Gemfile.html">Gemfile</a>
+  
+    <li class="file"><a href="./README.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./HerpZerp.html">HerpZerp</a>
+  
+    <li><a href="./HerpZerp/DerpGerp.html">HerpZerp::DerpGerp</a>
+  
+    <li><a href="./HerpZerp/DerpGerp/FooBar.html">HerpZerp::DerpGerp::FooBar</a>
+  
+    <li><a href="./BlockValidator.html">BlockValidator</a>
+  
+    <li><a href="./ExistenceValidator.html">ExistenceValidator</a>
+  
+    <li><a href="./FooBar.html">FooBar</a>
+  
+    <li><a href="./Persister.html">Persister</a>
+  
+    <li><a href="./Persisting.html">Persisting</a>
+  
+    <li><a href="./PresenceValidator.html">PresenceValidator</a>
+  
+    <li><a href="./Role.html">Role</a>
+  
+    <li><a href="./Scheduler.html">Scheduler</a>
+  
+    <li><a href="./SelfExistenceValidator.html">SelfExistenceValidator</a>
+  
+    <li><a href="./TestPersister.html">TestPersister</a>
+  
+    <li><a href="./Validating.html">Validating</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class Persister</h1>
+
+  <div id="description" class="description">
+    
+<p>This <a href="Persister.html">Persister</a> registry is the source for all
+persisters in the system. Register persisters here with for.</p>
+
+<h2 id="label-Persisters">Persisters</h2>
+
+<p>All persisters must respond to the following:</p>
+<ul><li>
+<p><code>all</code>            Returns all records.</p>
+</li><li>
+<p>+find(id)+       Returns the record with the given id.</p>
+</li><li>
+<p>+exists?(id)+    Determines whether a record exists with the given id</p>
+</li><li>
+<p>+save(data)+     Saves a new record.</p>
+</li><li>
+<p>+save(data, id)+ Saves a record at the given id.</p>
+</li><li>
+<p>delete(id)       Deletes the record with the given id.</p>
+</li></ul>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-clear" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">clear</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Forgets about all previously saved persisters.</p>
+          
+
+          
+          <div class="method-source-code" id="clear-source">
+            <pre><span class="ruby-comment"># File lib/persisters/persister.rb, line 31</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">clear</span>
+  <span class="ruby-identifier">@@persisters</span> = <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- clear-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- clear-method -->
+
+    
+      <div id="method-c-for" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">for</span><span
+            class="method-args">(klass, persister=nil)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>If persister is supplied, then this sets the persister for the given class,
+otherwise it returns the previously set persister for that class. If the
+first argument is a class, it is converted to a symbol.</p>
+          
+
+          
+          <div class="method-source-code" id="for-source">
+            <pre><span class="ruby-comment"># File lib/persisters/persister.rb, line 19</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-keyword">for</span>(<span class="ruby-identifier">klass</span>, <span class="ruby-identifier">persister</span>=<span class="ruby-keyword">nil</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">klass</span>.<span class="ruby-identifier">is_a?</span> <span class="ruby-constant">Class</span>
+    <span class="ruby-identifier">klass</span> = <span class="ruby-identifier">klass</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">demodulize</span>.<span class="ruby-identifier">underscore</span>.<span class="ruby-identifier">to_sym</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">@@persisters</span> <span class="ruby-operator">||=</span> {}
+  <span class="ruby-identifier">@@persisters</span>[<span class="ruby-identifier">klass</span>] <span class="ruby-operator">||=</span> <span class="ruby-identifier">persister</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">persister</span>
+
+  <span class="ruby-identifier">@@persisters</span>[<span class="ruby-identifier">klass</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- for-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- for-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.2.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+
