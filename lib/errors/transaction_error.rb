@@ -1,0 +1,3 @@
+class TransactionError < StandardError
+
+end

@@ -32,4 +32,8 @@ class Persisting < Role
   def ==(other)
     other && other.instance_variable_get(:@decorated) == @decorated && other.id == @id
   end
+
+  def where(params)
+    Persister.for(@decorated).where(params)
+  end
 end
