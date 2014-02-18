@@ -31,16 +31,111 @@ describe Persisting do
         subject.should_not == Persisting.new(double('something else entirely'))
       end
     end
+
+    context 'different id' do
+      it 'should not be equal' do
+        other = Persisting.new(decorated)
+
+        subject.instance_variable_set(:@id, 1)
+        other.instance_variable_set(:@id, 2)
+
+        subject.should_not == other
+      end
+    end
   end
 
-  context 'diff id' do
-    it 'should not be equal' do
-      other = Persisting.new(decorated)
+  describe '#save' do
+    let(:persister) { double('persister') }
+    let(:id) { double('id') }
 
-      subject.instance_variable_set(:@id, 1)
-      other.instance_variable_set(:@id, 2)
+    before(:each) do
+      Persister.stub(:for).and_return(persister)
+    end
 
-      subject.should_not == other
+    context 'persistence completes' do
+      let(:saved) { double('a saved thingy', id: id) }
+
+      before(:each) do
+        persister.stub(:save).and_return(saved)
+      end
+
+      context 'with id' do
+        it 'should call persister save with id' do
+          persister.should_receive(:save).with(decorated, id)
+
+          subject.save(id)
+        end
+
+        it 'should remember the id' do
+          subject.save(id)
+
+          subject.id.should == id
+        end
+
+        it 'should return itself' do
+          subject.save(id).should be subject
+        end
+      end
+
+      context 'no id' do
+        it 'should call persister save with nil id' do
+          persister.should_receive(:save).with(decorated, nil)
+
+          subject.save()
+        end
+
+        it 'should remember the id' do
+          subject.save()
+
+          subject.id.should == id
+        end
+
+        it 'should return itself' do
+          subject.save(id).should be subject
+        end
+      end
+    end
+
+    context 'persistence fails' do
+      before(:each) do
+        persister.stub(:save).and_return(nil)
+      end
+
+      context 'with id' do
+        it 'should call persister save with id' do
+          persister.should_receive(:save).with(decorated, id)
+
+          subject.save(id)
+        end
+
+        it 'should not remember the id' do
+          subject.save(id)
+
+          subject.id.should == nil
+        end
+
+        it 'should return nil' do
+          subject.save(id).should be nil
+        end
+      end
+
+      context 'no id' do
+        it 'should call persister save with nil id' do
+          persister.should_receive(:save).with(decorated, nil)
+
+          subject.save()
+        end
+
+        it 'should not remember an id' do
+          subject.save()
+
+          subject.id.should == nil
+        end
+
+        it 'should return nil' do
+          subject.save(id).should be nil
+        end
+      end
     end
   end
 end
