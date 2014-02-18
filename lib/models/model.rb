@@ -23,10 +23,8 @@ class Model
   end
 
   def ==(other)
-    if other
-      return instance_variables.all? do |var|
-        instance_variable_get(var) == other.instance_variable_get(var)
-      end
+    return instance_variables.all? do |var|
+      instance_variable_get(var) == other.instance_variable_get(var)
     end
 
     false

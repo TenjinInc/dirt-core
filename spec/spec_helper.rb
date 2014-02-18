@@ -2,7 +2,6 @@ require 'bundler'
 Bundler.require :test
 FactoryGirl.find_definitions
 
-require './lib/scheduler_core'
 require 'active_support/all'
 
 RSpec.configure do |c|
