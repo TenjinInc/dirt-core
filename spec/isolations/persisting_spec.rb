@@ -179,7 +179,7 @@ describe Persisting do
     end
   end
 
-  context 'where' do
-    pending 'should probably return a list of persistings. actually, why is this in persisting?'
-  end
+  #context 'where' do
+  #  pending 'should probably return a list of persistings. actually, why is this in persisting?'
+  #end
 end
