@@ -141,7 +141,23 @@ describe Persisting do
   end
 
   context '#load' do
-    pending 'should return itself with the loaded data.'
+    context 'there is a record by that id' do
+      it 'should return the persisting wrapped loaded object' do
+        loaded = Persisting.new(decorated)
+
+        persister.stub(:load).and_return(loaded)
+
+        subject.load(double('id')).should == loaded
+      end
+    end
+
+    context 'no record has that id' do
+      it 'should return the persisting wrapped loaded object' do
+        persister.stub(:load).and_return(nil)
+
+        subject.load(double('id')).should be nil
+      end
+    end
   end
 
   context '#delete' do
