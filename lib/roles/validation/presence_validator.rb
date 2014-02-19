@@ -12,7 +12,7 @@ class PresenceValidator
 
     value = validated.send(@property)
 
-    value.present? && value !~ /^\s*$/
+    value.present? && !(value =~ /\A\s*\Z/)
   end
 
   def error_message(validated)
