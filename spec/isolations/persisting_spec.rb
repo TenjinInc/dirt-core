@@ -7,6 +7,12 @@ describe Persisting do
     Persisting.new(decorated)
   end
 
+  let(:persister) { double('persister') }
+
+  before(:each) do
+    Persister.stub(:for).and_return(persister)
+  end
+
   describe '#==' do
     context 'same id' do
       it 'should be equal with identical contents' do
@@ -45,12 +51,7 @@ describe Persisting do
   end
 
   describe '#save' do
-    let(:persister) { double('persister') }
     let(:id) { double('id') }
-
-    before(:each) do
-      Persister.stub(:for).and_return(persister)
-    end
 
     context 'persistence completes' do
       let(:saved) { double('a saved thingy', id: id) }
@@ -137,5 +138,32 @@ describe Persisting do
         end
       end
     end
+  end
+
+  context '#load' do
+    pending 'should return itself with the loaded data.'
+  end
+
+  context '#delete' do
+    context 'there is a record by that id' do
+      it 'should return the persisting-wrapped deleted object' do
+        deleted = Persisting.new(decorated)
+
+        persister.stub(:delete).and_return(deleted)
+        subject.delete(double('an_id')).should == deleted
+      end
+    end
+
+    context 'no record has that id' do
+      it 'should return nil' do
+        persister.stub(:delete).and_return(nil)
+
+        subject.delete(double('an_id')).should be nil
+      end
+    end
+  end
+
+  context 'where' do
+    pending 'should probably return a list of persistings. actually, why is this in persisting?'
   end
 end
