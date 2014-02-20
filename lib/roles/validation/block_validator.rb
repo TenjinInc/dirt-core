@@ -5,11 +5,11 @@ class BlockValidator
     @message_block = message_block
   end
 
-  def valid?(valdated)
-    @block.call
+  def valid?(validated)
+    @block.call(validated)
   end
 
   def error_message(validated)
-    @message_block.call
+    @message_block.call(validated)
   end
 end
