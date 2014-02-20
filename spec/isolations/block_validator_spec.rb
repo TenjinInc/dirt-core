@@ -2,5 +2,11 @@ require 'spec_helper'
 require 'roles/validation/block_validator'
 
 describe BlockValidator do
-  pending
+  describe '' do
+
+  end
+
+  describe '' do
+
+  end
 end
