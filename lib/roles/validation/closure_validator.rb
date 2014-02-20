@@ -1,5 +1,5 @@
 # Takes a block, and uses it to determine validity,
-class BlockValidator
+class ClosureValidator
   def initialize(block, message_block)
     @block = block
     @message_block = message_block

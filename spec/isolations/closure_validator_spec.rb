@@ -1,13 +1,13 @@
 require 'spec_helper'
-require 'roles/validation/block_validator'
+require 'roles/validation/closure_validator'
 
-describe BlockValidator do
+describe ClosureValidator do
   let(:expected_validity) { double('validity') }
   let(:expected_error) { double('error') }
 
   describe 'closure use' do
     subject do
-      BlockValidator.new(lambda { |val| expected_validity }, lambda { |err| expected_error })
+      ClosureValidator.new(lambda { |val| expected_validity }, lambda { |err| expected_error })
     end
 
     it 'should use the block to determines validity' do
@@ -21,7 +21,7 @@ describe BlockValidator do
 
   describe 'parameters' do
     subject do
-      BlockValidator.new(lambda { |val| val }, lambda { |err| err })
+      ClosureValidator.new(lambda { |val| val }, lambda { |err| err })
     end
 
     it 'should pass the validated object into the valid? closure' do
