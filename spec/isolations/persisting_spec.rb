@@ -1,4 +1,6 @@
+require 'spec_helper'
 require './lib/roles/persisting'
+require './lib/persisters/memory_persister'
 
 describe Persisting do
   let(:decorated) { double('decorated') }
@@ -7,7 +9,7 @@ describe Persisting do
     Persisting.new(decorated)
   end
 
-  let(:persister) { double('persister') }
+  let(:persister) { MemoryPersister.new }
 
   before(:each) do
     Persister.stub(:for).and_return(persister)
@@ -56,10 +58,6 @@ describe Persisting do
     context 'persistence completes' do
       let(:saved) { {id => double('a saved thingy')} }
 
-      before(:each) do
-        persister.stub(:save).and_return(saved)
-      end
-
       context 'with id' do
         it 'should call persister save with id' do
           persister.should_receive(:save).with(decorated, id)
@@ -85,7 +83,9 @@ describe Persisting do
           subject.save()
         end
 
-        it 'should remember the id' do
+        it 'should remember the id assinged by persister' do
+          persister.stub(:save).and_return({id => decorated})
+
           subject.save()
 
           subject.id.should == id
@@ -142,20 +142,30 @@ describe Persisting do
 
   context '#load' do
     context 'there is a record by that id' do
-      it 'should return the persisting wrapped loaded object' do
-        loaded = Persisting.new(decorated)
+      let(:id) { double('id') }
+      let(:decorated_hash) { double('decorated\'s hash') }
 
-        persister.stub(:load).and_return(loaded)
+      before(:each) do
+        persister.save(decorated, id)
+        decorated.stub(:to_hash).and_return(decorated_hash)
+      end
 
-        subject.load(double('id')).should == loaded
+      it 'should load the persisted object into itself' do
+        decorated.should_receive(:update).with(decorated_hash)
+
+        subject.load(id)
+      end
+
+      it 'should return itself' do
+        decorated.stub(:update)
+
+        subject.load(id).should be subject
       end
     end
 
     context 'no record has that id' do
-      it 'should return the persisting wrapped loaded object' do
-        persister.stub(:load).and_return(nil)
-
-        subject.load(double('id')).should be nil
+      it 'should explode' do
+        expect{subject.load(double('id'))}.to raise_error(MissingRecordError)
       end
     end
   end

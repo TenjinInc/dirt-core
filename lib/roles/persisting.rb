@@ -19,8 +19,8 @@ class Persisting < Role
   def load(id)
     loaded = Persister.for(@decorated).load(id)
 
-    @decorated.update(loaded[:data])
-    self.id = loaded[:id]
+    @id = loaded.keys.first
+    @decorated.update(loaded[@id].to_hash)
 
     self
   end
