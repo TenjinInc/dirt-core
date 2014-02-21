@@ -26,7 +26,7 @@ class Persister
     @@persisters ||= {}
     @@persisters[klass] ||= persister if persister
 
-    @@persisters[klass]
+    @@persisters[klass] || raise(NoPersisterError.new("There is no persister for #{klass}."))
   end
 
   # Forgets about all previously saved persisters.
@@ -52,3 +52,6 @@ class Persister
   end
 end
 
+class NoPersisterError < StandardError
+
+end

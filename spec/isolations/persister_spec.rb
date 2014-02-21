@@ -3,7 +3,6 @@ require './lib/roles/role'
 require './lib/persisters/persister'
 require './lib/errors/transaction_error'
 
-
 describe Persister do
   let(:fake_persister){double 'Fake Persister'}
 
@@ -29,6 +28,12 @@ describe Persister do
         end
 
         after(:each) { Persister.clear }
+      end
+    end
+
+    context 'no persister for type' do
+      it 'should throw an exception' do
+        expect { Persister.for(:bogus_type)}.to raise_error(NoPersisterError, 'There is no persister for bogus_type.')
       end
     end
   end
