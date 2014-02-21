@@ -10,19 +10,25 @@ class Persisting < Role
     saved = Persister.for(@decorated.class).save(@decorated, id)
 
     if saved
-      self.id = saved.id
+      self.id = saved.keys.first
       self
     end
   end
 
-  # Retrieves the decorated object from the appropriate persister.
+  # Loads persisted data into the decorated object
   def load(id)
-    Persister.for(@decorated).load(id)
+    loaded = Persister.for(@decorated).load(id)
+
+    @decorated.update(loaded[:data])
+    self.id = loaded[:id]
+
+    self
   end
 
   # Removes the decorated object from the appropriate persister.
   def delete(id)
     Persister.for(@decorated).delete(id)
+    nil
   end
 
   def ==(other)

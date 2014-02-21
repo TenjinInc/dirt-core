@@ -54,7 +54,7 @@ describe Persisting do
     let(:id) { double('id') }
 
     context 'persistence completes' do
-      let(:saved) { double('a saved thingy', id: id) }
+      let(:saved) { {id => double('a saved thingy')} }
 
       before(:each) do
         persister.stub(:save).and_return(saved)
