@@ -52,7 +52,3 @@ class Persister
   end
 
 end
-class TransactionError < StandardError
-
-end
-
