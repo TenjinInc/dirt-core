@@ -1,0 +1,3 @@
+class NoPersisterError < StandardError
+
+end

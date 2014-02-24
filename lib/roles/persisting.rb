@@ -28,7 +28,6 @@ class Persisting < Role
   # Removes the decorated object from the appropriate persister.
   def delete(id)
     Persister.for(@decorated).delete(id)
-    nil
   end
 
   def ==(other)
