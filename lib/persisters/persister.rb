@@ -51,7 +51,3 @@ class Persister
     end
   end
 end
-
-class NoPersisterError < StandardError
-
-end
