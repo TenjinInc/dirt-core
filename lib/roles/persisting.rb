@@ -17,7 +17,7 @@ class Persisting < Role
 
   # Loads persisted data into the decorated object
   def load(id)
-    loaded = Persister.for(@decorated).load(id)
+    loaded = Persister.for(@decorated.class).load(id)
 
     @id = loaded.keys.first
     @decorated.update(loaded[@id].to_hash)
@@ -27,7 +27,7 @@ class Persisting < Role
 
   # Removes the decorated object from the appropriate persister.
   def delete(id)
-    Persister.for(@decorated).delete(id)
+    Persister.for(@decorated.class).delete(id)
   end
 
   def ==(other)

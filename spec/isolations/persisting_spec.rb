@@ -12,7 +12,11 @@ describe Persisting do
   let(:persister) { MemoryPersister.new }
 
   before(:each) do
-    Persister.stub(:for).and_return(persister)
+    Persister.for(:mock, persister)
+  end
+
+  after(:each) do
+    Persister.clear
   end
 
   describe '#==' do
