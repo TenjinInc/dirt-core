@@ -7,15 +7,11 @@ class Persisting < Role
 
   # Saves the decorated object with the appropriate persister.
   def save(id=nil)
-    persister = Persister.for(@decorated.class)
-
-    saved = persister.save(@decorated, id)
+    saved = Persister.for(@decorated.class).save(@decorated, id)
 
     if saved
       self.id = saved.id
       self
-    else
-      nil
     end
   end
 

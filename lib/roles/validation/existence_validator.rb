@@ -1,6 +1,7 @@
 require 'active_support/all'
 
 # Tests for whether the property referenced by an id is saved in the appropriate persister.
+# This validator is stateful. #error_message returns the errors from the most recent run of #valid?.
 #
 # For more about validation, see Validating
 class ExistenceValidator
@@ -8,10 +9,11 @@ class ExistenceValidator
   #
   # Options include:
   # * +as+:: The class of the type to search under
+  # * +list+:: If set, will treat +property+ as an id list, checking existence of all.
   #
   def initialize(property, opts)
     @property = property
-    @type = opts[:as]
+    @type = opts[:as] || raise(ArgumentError.new('ExistenceValidator requires as: be provided with a type.'))
     @list = opts[:list] || false
     @bad_ids = []
   end
@@ -39,8 +41,6 @@ class ExistenceValidator
       if @list
         "Those #{@type.to_s.demodulize.pluralize} (ids: #{@bad_ids.join(", ")}) do not exist."
       else
-        id = validated.send(property_id) if validated
-
         "That #{@type.to_s.demodulize} (id: #{@bad_ids.first || "nil"}) does not exist."
       end
     end

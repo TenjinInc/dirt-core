@@ -18,10 +18,6 @@ class TestPersister
     p
   end
 
-  def children_of(record)
-    @records.values.select { |r| r.parent_id == record.id }
-  end
-
   # Returns the record with the given id.
   def load(id)
     @records[id]

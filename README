@@ -11,3 +11,4 @@ DCI Implementation in Ruby by Tenjin
 #
 # == Usage
 # To grow things in Dirt, create Contexts for your application, and use Roles to operate on your model objects.
+# Extend Model to gain helpful methods used in standard Dirt applications.
