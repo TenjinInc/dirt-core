@@ -1,5 +1,4 @@
 require 'active_support/all'
-require './lib/errors/transaction_error'
 
 # This Persister registry is the source for all persisters in the system. Register persisters here with
 # #for.
@@ -50,5 +49,9 @@ class Persister
       {errors: e.message}
     end
   end
+
+end
+class TransactionError < StandardError
+
 end
 
