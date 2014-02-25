@@ -27,7 +27,7 @@ class Persister
     @@persisters ||= {}
     @@persisters[klass] ||= persister if persister
 
-    @@persisters[klass] || raise(NoPersisterError.new("There is no persister for #{klass}."))
+    @@persisters[klass] || raise(NoPersisterError.new("There is no persister for \"#{klass.to_s.pluralize}\"."))
   end
 
   # Forgets about all previously saved persisters.

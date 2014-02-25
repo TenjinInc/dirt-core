@@ -33,7 +33,7 @@ describe Persister do
 
     context 'no persister for type' do
       it 'should throw an exception' do
-        expect { Persister.for(:bogus_type)}.to raise_error(NoPersisterError, 'There is no persister for bogus_type.')
+        expect { Persister.for(:bogus_type)}.to raise_error(NoPersisterError, 'There is no persister for "bogus_types".')
       end
     end
   end
