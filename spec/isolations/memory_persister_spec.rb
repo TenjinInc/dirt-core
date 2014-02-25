@@ -54,7 +54,7 @@ describe MemoryPersister do
 
       subject.instance_variable_set(:@records, {double('id') => double('data'), double('id2') => double('data2')})
 
-      expect { subject.load(id) }.to raise_error(MissingRecordError, "No record can be found for id #{id}")
+      expect { subject.load(id) }.to raise_error(MissingRecordError, "No record can be found for id #{id}.")
     end
   end
 
@@ -128,7 +128,7 @@ describe MemoryPersister do
 
       subject.instance_variable_set(:@records, {double('id') => double('data'), double('id2') => double('data2')})
 
-      expect { subject.delete(id) }.to raise_error(MissingRecordError, "No record can be found for id #{id}")
+      expect { subject.delete(id) }.to raise_error(MissingRecordError, "No record can be found for id #{id}.")
     end
   end
 end

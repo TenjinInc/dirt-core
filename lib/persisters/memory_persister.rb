@@ -41,6 +41,6 @@ end
 
 class MissingRecordError < StandardError
   def initialize(id)
-    super("No record can be found for id #{id}")
+    super("No record can be found for id #{id || 'nil'}.")
   end
 end
