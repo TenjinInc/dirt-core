@@ -21,26 +21,12 @@ describe Persisting do
 
   describe '#==' do
     context 'same id' do
-      it 'should be equal with identical contents' do
-        subject.should == Persisting.new(decorated)
-      end
+      let(:decorated) { [5] }
 
-      it 'should equal itself' do
-        subject.should == subject
-      end
-
-      context 'equilavent contents' do
-        let(:decorated) { [5] }
-
-        it 'should be equal with equivalent contents' do
-          clone = [5]
-          decorated.should == clone
-          subject.should == Persisting.new(clone)
-        end
-      end
-
-      it 'should not equal others with different contents' do
-        subject.should_not == Persisting.new(double('something else entirely'))
+      it 'should be equal with equivalent contents' do
+        clone = [5]
+        decorated.should == clone
+        subject.should == Persisting.new(clone)
       end
     end
 
@@ -169,7 +155,7 @@ describe Persisting do
 
     context 'no record has that id' do
       it 'should explode' do
-        expect{subject.load(double('id'))}.to raise_error(MissingRecordError)
+        expect { subject.load(double('id')) }.to raise_error(MissingRecordError)
       end
     end
   end

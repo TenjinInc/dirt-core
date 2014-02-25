@@ -58,5 +58,37 @@ module Scheduler
         end
       end
     end
+
+    describe '#== ' do
+      it 'should be equal with identical contents' do
+        subject.should == Persisting.new(decorated)
+      end
+
+      it 'should equal itself' do
+        subject.should == subject
+      end
+
+      it 'should equal the decorated object' do
+        subject.should == decorated
+      end
+
+      it 'should not equal a different object' do
+        subject.should_not == double('something else entirely')
+      end
+
+      context 'equivalent contents' do
+        let(:decorated) { [5] }
+
+        it 'should be equal with equivalent contents' do
+          clone = [5]
+          decorated.should == clone
+          subject.should == Persisting.new(clone)
+        end
+      end
+
+      it 'should not equal others with different contents' do
+        subject.should_not == Persisting.new(double('something else entirely'))
+      end
+    end
   end
 end

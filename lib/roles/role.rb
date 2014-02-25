@@ -23,4 +23,8 @@ class Role
   def respond_to?(method, privates = false)
     super || @decorated.respond_to?(method, privates)
   end
+
+  def ==(other)
+    other && (other.instance_variable_get(:@decorated) == @decorated || other == @decorated)
+  end
 end

@@ -31,7 +31,7 @@ class Persisting < Role
   end
 
   def ==(other)
-    other && other.instance_variable_get(:@decorated) == @decorated && other.id == @id
+    super && other.id == @id
   end
 
   def where(params)
