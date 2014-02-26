@@ -19,6 +19,14 @@ describe Persisting do
     Persister.clear
   end
 
+  describe '#initialize' do
+    it 'should save the given id' do
+      id = 5
+      p = Persisting.new(decorated, id)
+      p.id.should == id
+    end
+  end
+
   describe '#==' do
     context 'same id' do
       let(:decorated) { [5] }

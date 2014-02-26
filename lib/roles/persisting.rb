@@ -3,14 +3,19 @@ require 'persisters/persister'
 
 # Role for adding persistability to model objects.
 class Persisting < Role
-  attr_accessor :id
+  attr_reader :id
+
+  def initialize(decorated, id=nil)
+    super(decorated)
+    @id = id
+  end
 
   # Saves the decorated object with the appropriate persister.
   def save(id=nil)
     saved = Persister.for(@decorated.class).save(@decorated, id)
 
     if saved
-      self.id = saved.keys.first
+      @id = saved.keys.first
       self
     end
   end
