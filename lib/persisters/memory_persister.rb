@@ -6,7 +6,7 @@ class MemoryPersister
   end
 
   # Saves the record to the array either under the given id, or a new one if none is provided,
-  def save(data, id)
+  def save(data, id=nil)
     id ||= @next_id += 1
 
     @records[id] = data
