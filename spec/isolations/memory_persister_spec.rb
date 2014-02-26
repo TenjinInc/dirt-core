@@ -2,6 +2,9 @@ require 'spec_helper'
 require 'persisters/memory_persister'
 
 describe MemoryPersister do
+  let(:type) { :test }
+  subject { MemoryPersister.new(type) }
+
   describe '#save' do
     it 'should return the id and data as a hash on success' do
       id = double('id')
@@ -54,7 +57,7 @@ describe MemoryPersister do
 
       subject.instance_variable_set(:@records, {double('id') => double('data'), double('id2') => double('data2')})
 
-      expect { subject.load(id) }.to raise_error(MissingRecordError, "No record can be found for id #{id}.")
+      expect { subject.load(id) }.to raise_error(MissingRecordError, "That #{type} (id: #{id}) does not exist.")
     end
   end
 
@@ -128,7 +131,7 @@ describe MemoryPersister do
 
       subject.instance_variable_set(:@records, {double('id') => double('data'), double('id2') => double('data2')})
 
-      expect { subject.delete(id) }.to raise_error(MissingRecordError, "No record can be found for id #{id}.")
+      expect { subject.delete(id) }.to raise_error(MissingRecordError, "That #{type} (id: #{id}) does not exist.")
     end
   end
 end
