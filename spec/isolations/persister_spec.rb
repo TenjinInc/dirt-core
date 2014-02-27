@@ -55,7 +55,7 @@ describe Persister do
 
       Persister.transaction([fake_persister]) do
         raise TransactionError, "The Error"
-      end.should == {errors: "The Error"}
+      end.should == {errors: ["The Error"]}
     end
 
     it "should not rescue non-transaction errors" do

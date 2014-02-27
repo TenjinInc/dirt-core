@@ -48,7 +48,7 @@ class Persister
         end
       end
     rescue TransactionError => e
-      {errors: e.message}
+      {errors: [e.message]}
     end
   end
 end

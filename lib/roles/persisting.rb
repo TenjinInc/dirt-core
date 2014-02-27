@@ -24,8 +24,16 @@ class Persisting < Role
   def load(id)
     loaded = Persister.for(@decorated.class).load(id)
 
-    @id = loaded.keys.first
-    @decorated.update(loaded[@id].to_hash)
+    chameleonize(loaded.keys.first, loaded[id])
+
+    self
+  end
+
+  # Loads from the first record that matches the given attributes.
+  def load_by(attrs)
+    record = Persister.for(@decorated.class).where(attrs).first
+
+    chameleonize(record.first, record.last)
 
     self
   end
@@ -39,7 +47,9 @@ class Persisting < Role
     super && other.id == @id
   end
 
-  def where(params)
-    Persister.for(@decorated).where(params)
+  private
+  def chameleonize(id, record)
+    @id = id
+    @decorated.update(record.to_hash)
   end
 end

@@ -154,6 +154,12 @@ describe Persisting do
         subject.load(id)
       end
 
+      it 'should keep the id' do
+        decorated.stub(:update)
+
+        subject.load(id).id.should == id
+      end
+
       it 'should return itself' do
         decorated.stub(:update)
 
@@ -164,6 +170,99 @@ describe Persisting do
     context 'no record has that id' do
       it 'should explode' do
         expect { subject.load(double('id')) }.to raise_error(MissingRecordError)
+      end
+    end
+  end
+
+  context '#load_by' do
+    let(:attr) { :test_attr }
+    let(:value) { double('test value') }
+
+    let(:id1) { double('id1') }
+    let(:id2) { double('id2') }
+    let(:id3) { double('id3') }
+
+    let(:record1) { double('record1') }
+    let(:record2) { double('record2') }
+    let(:record3) { double('record3') }
+
+    before(:each) do
+      persister.save(record1, id1)
+      persister.save(record2, id2)
+      persister.save(record3, id3)
+    end
+
+    context 'there is a record by that attribute' do
+      let(:record_hash) { double('record2\'s hash') }
+
+      before(:each) do
+        record1.stub(attr).and_return(double('something else'))
+        record2.stub(attr).and_return(double('something else'))
+        record3.stub(attr).and_return(value)
+
+        record3.stub(:to_hash).and_return(record_hash)
+      end
+
+      it 'should load the persisted object into itself' do
+        decorated.should_receive(:update).with(record_hash)
+
+        subject.load_by(attr => value)
+      end
+
+      it 'should return itself' do
+        decorated.stub(:update)
+
+        subject.load_by(attr => value).should be subject
+      end
+
+      it 'should keep the found id' do
+        decorated.stub(:update)
+
+        subject.load_by(attr => value).id.should == id3
+      end
+    end
+
+    context 'multiple records have that attribute' do
+      let(:record_hash) { double('record2\'s hash') }
+
+      before(:each) do
+        record1.stub(attr).and_return(double('something else'))
+        record2.stub(attr).and_return(value)
+        record3.stub(attr).and_return(value)
+
+        record2.stub(:to_hash).and_return(record_hash)
+      end
+
+      it 'should load the first matching persisted object into itself' do
+        decorated.should_receive(:update).with(record_hash)
+
+        subject.load_by(attr => value)
+      end
+
+      it 'should return itself' do
+        decorated.stub(:update)
+
+        subject.load_by(attr => value).should be subject
+      end
+
+      it 'should keep the found id' do
+        decorated.stub(:update)
+
+        subject.load_by(attr => value).id.should == id2
+      end
+    end
+
+    context 'no record has that attribute' do
+      before(:each) do
+        record1.stub(attr).and_return(double('something else'))
+        record2.stub(attr).and_return(double('something else'))
+        record3.stub(attr).and_return(double('something else'))
+      end
+
+      it 'should NOT load the persisted object but explode' do
+        decorated.should_not_receive(:update)
+
+        expect { subject.load_by(attr => value) }.to raise_error(MissingRecordError, "No record matches #{attr} == #{value}.")
       end
     end
   end
@@ -186,8 +285,4 @@ describe Persisting do
       end
     end
   end
-
-  #context 'where' do
-  #  pending 'should probably return a list of persistings. actually, why is this in persisting?'
-  #end
 end

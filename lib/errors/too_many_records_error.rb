@@ -1,0 +1,2 @@
+class TooManyRecordsError < StandardError
+end
