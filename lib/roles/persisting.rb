@@ -12,7 +12,7 @@ class Persisting < Role
 
   # Saves the decorated object with the appropriate persister.
   def save(id=nil)
-    saved = Persister.for(@decorated.class).save(@decorated, id)
+    saved = persister.save(@decorated, id)
 
     if saved
       @id = saved.keys.first
@@ -22,7 +22,9 @@ class Persisting < Role
 
   # Loads persisted data into the decorated object
   def load(id)
-    loaded = Persister.for(@decorated.class).load(id)
+    assert_exists(id)
+
+    loaded = persister.load(id)
 
     chameleonize(loaded.keys.first, loaded[id])
 
@@ -31,16 +33,22 @@ class Persisting < Role
 
   # Loads from the first record that matches the given attributes.
   def load_by(attrs)
-    record = Persister.for(@decorated.class).where(attrs).first
+    records = Persister.for(@decorated.class).where(attrs)
 
-    chameleonize(record.first, record.last)
+    if records.empty?
+      raise MissingRecordError.new("No record matches #{attrs.collect { |pair| pair.join(' == ') }.join(', ')}.")
+    end
+
+    chameleonize(records.first.first, records.first.last)
 
     self
   end
 
   # Removes the decorated object from the appropriate persister.
   def delete(id)
-    Persister.for(@decorated.class).delete(id)
+    assert_exists(id)
+
+    persister.delete(id)
   end
 
   def ==(other)
@@ -51,5 +59,13 @@ class Persisting < Role
   def chameleonize(id, record)
     @id = id
     @decorated.update(record.to_hash)
+  end
+
+  def persister
+    Persister.for(@decorated.class)
+  end
+
+  def assert_exists(id)
+    raise MissingRecordError.new("That #{@decorated.class} (id: #{id || 'nil'}) does not exist.") unless persister.exists?(id)
   end
 end

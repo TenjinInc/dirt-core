@@ -52,12 +52,12 @@ describe MemoryPersister do
       subject.load(id).should == {id => data}
     end
 
-    it 'should raise exception when given an invalid id' do
+    it 'should return nil when given an invalid id' do
       id = double('id3')
 
       subject.instance_variable_set(:@records, {double('id') => double('data'), double('id2') => double('data2')})
 
-      expect { subject.load(id) }.to raise_error(MissingRecordError, "That #{type} (id: #{id}) does not exist.")
+      subject.load(id).should == nil
     end
   end
 
@@ -126,12 +126,12 @@ describe MemoryPersister do
       subject.instance_variable_get(:@records).should == {id2 => data2}
     end
 
-    it 'should raise exception when given an invalid id' do
+    it 'should return nil when given an invalid id' do
       id = double('id3')
 
       subject.instance_variable_set(:@records, {double('id') => double('data'), double('id2') => double('data2')})
 
-      expect { subject.delete(id) }.to raise_error(MissingRecordError, "That #{type} (id: #{id}) does not exist.")
+      subject.delete(id).should == nil
     end
   end
 end

@@ -269,11 +269,14 @@ describe Persisting do
 
   context '#delete' do
     context 'there is a record by that id' do
+      let(:id) { double('id') }
       it 'should return the persisting-wrapped deleted object' do
+        persister.save(decorated, id)
+
         deleted = Persisting.new(decorated)
 
         persister.stub(:delete).and_return(deleted)
-        subject.delete(double('an_id')).should == deleted
+        subject.delete(id).should == deleted
       end
     end
 
@@ -281,7 +284,7 @@ describe Persisting do
       it 'should return nil' do
         persister.stub(:delete).and_return(nil)
 
-        subject.delete(double('an_id')).should be nil
+        expect { subject.delete(double('an_id')) }.to raise_error(MissingRecordError)
       end
     end
   end

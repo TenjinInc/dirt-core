@@ -19,9 +19,9 @@ class MemoryPersister
 
   # Returns the record with the given id.
   def load(id)
-    raise MissingRecordError.new("That #{@type_name} (id: #{id || 'nil'}) does not exist.") unless exists?(id)
+    loaded = @records.slice(id)
 
-    @records.slice(id)
+    loaded.empty? ? nil : loaded
   end
 
   # Returns the list of all records.
@@ -31,9 +31,9 @@ class MemoryPersister
 
   # Removes the record with the given id.
   def delete(id)
-    raise MissingRecordError.new("That #{@type_name} (id: #{id || 'nil'}) does not exist.") unless exists?(id)
-
-    {id => @records.delete(id)}
+    if @records.has_key?(id)
+      {id => @records.delete(id)}
+    end
   end
 
   # determines whether a record exists with the given id
@@ -46,10 +46,6 @@ class MemoryPersister
       same_id = (params.delete(:id) || id) == id
 
       params.all? { |attr, val| record.send(attr) == val } && same_id
-    end
-
-    if matches.empty?
-      raise MissingRecordError.new("No record matches #{params.collect { |pair| pair.join(' == ') }.join(', ')}.")
     end
 
     Relation.new(matches)
