@@ -66,6 +66,6 @@ class Persisting < Role
   end
 
   def assert_exists(id)
-    raise MissingRecordError.new("That #{@decorated.class} (id: #{id || 'nil'}) does not exist.") unless persister.exists?(id)
+    raise MissingRecordError.new("That #{@decorated.class.to_s.demodulize.downcase} (id: #{id || 'nil'}) does not exist.") unless persister.exists?(id)
   end
 end

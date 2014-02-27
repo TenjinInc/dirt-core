@@ -3,7 +3,6 @@ require 'persisters/memory_persister'
 
 describe MemoryPersister do
   let(:type) { :test }
-  subject { MemoryPersister.new(type) }
 
   describe '#save' do
     it 'should return the id and data as a hash on success' do

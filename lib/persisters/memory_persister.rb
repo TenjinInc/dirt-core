@@ -2,10 +2,9 @@ require 'errors/missing_record_error'
 
 # An in-memory implementation of persistence.
 class MemoryPersister
-  def initialize(type)
+  def initialize
     @next_id = 0
     @records = {}
-    @type_name = type
   end
 
   # Saves the record to the array either under the given id, or a new one if none is provided,

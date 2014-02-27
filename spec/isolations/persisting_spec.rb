@@ -9,7 +9,7 @@ describe Persisting do
     Persisting.new(decorated)
   end
 
-  let(:persister) { MemoryPersister.new(:mock) }
+  let(:persister) { MemoryPersister.new }
 
   before(:each) do
     Persister.for(:mock, persister)
