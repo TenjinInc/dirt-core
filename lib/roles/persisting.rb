@@ -15,7 +15,7 @@ class Persisting < Role
     saved = persister.save(@decorated, id)
 
     if saved
-      @id = saved.keys.first
+      @id = saved.id
       self
     end
   end
@@ -26,20 +26,20 @@ class Persisting < Role
 
     loaded = persister.load(id)
 
-    chameleonize(loaded.keys.first, loaded[id])
+    chameleonize(loaded)
 
     self
   end
 
   # Loads from the first record that matches the given attributes.
   def load_by(attrs)
-    records = Persister.for(@decorated.class).where(attrs)
+    record = Persister.for(@decorated.class).find(attrs)
 
-    if records.empty?
+    unless record
       raise MissingRecordError.new("No record matches #{attrs.collect { |pair| pair.join(' == ') }.join(', ')}.")
     end
 
-    chameleonize(records.first.first, records.first.last)
+    chameleonize(record)
 
     self
   end
@@ -56,9 +56,9 @@ class Persisting < Role
   end
 
   private
-  def chameleonize(id, record)
-    @id = id
-    @decorated.update(record.to_hash)
+  def chameleonize(record)
+    @id = record.delete_field(:id)
+    @decorated.update(record.data.to_hash)
   end
 
   def persister
@@ -66,6 +66,8 @@ class Persisting < Role
   end
 
   def assert_exists(id)
-    raise MissingRecordError.new("That #{@decorated.class.to_s.demodulize.downcase} (id: #{id || 'nil'}) does not exist.") unless persister.exists?(id)
+    unless persister.exists?(id)
+      raise MissingRecordError.new("That #{@decorated.class.to_s.demodulize.downcase} (id: #{id || 'nil'}) does not exist.")
+    end
   end
 end

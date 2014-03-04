@@ -82,7 +82,7 @@ describe Persisting do
         end
 
         it 'should remember the id assinged by persister' do
-          persister.stub(:save).and_return({id => decorated})
+          persister.stub(:save).and_return(OpenStruct.new(id: id, data: decorated))
 
           subject.save()
 

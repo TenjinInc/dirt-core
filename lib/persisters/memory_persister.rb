@@ -1,4 +1,5 @@
 require 'errors/missing_record_error'
+require 'ostruct'
 
 # An in-memory implementation of persistence.
 class MemoryPersister
@@ -13,31 +14,37 @@ class MemoryPersister
 
     @records[id] = data
 
-    @records.slice(id)
+    OpenStruct.new(id: id, data: @records[id])
   end
 
   # Returns the record with the given id.
   def load(id)
-    loaded = @records.slice(id)
+    loaded = @records[id]
 
-    loaded.empty? ? nil : loaded
+    loaded ? OpenStruct.new(id: id, data: loaded) : nil
   end
 
   # Returns the list of all records.
   def all
-    @records.dup
+    @records.collect do |id, r|
+      OpenStruct.new(id: id, data: r)
+    end
   end
 
   # Removes the record with the given id.
   def delete(id)
     if @records.has_key?(id)
-      {id => @records.delete(id)}
+      OpenStruct.new(id: id, data: @records.delete(id))
     end
   end
 
   # determines whether a record exists with the given id
   def exists?(id)
     @records[id] != nil
+  end
+
+  def find(params)
+    where(params).first
   end
 
   def where(params)
@@ -49,32 +56,7 @@ class MemoryPersister
 
     Relation.new(matches)
   end
-
-  class Relation < MemoryPersister
-    @records = {}
-
-    def initialize(records)
-      @records = records
-    end
-
-    def first
-      @records.first
-    end
-
-    def last
-      @records.last
-    end
-
-    def collect(&block)
-      @records.collect(&block)
-    end
-
-    def each(&block)
-      @records.each(&block)
-    end
-
-    def empty?
-      @records.empty?
-    end
-  end
 end
+
+# This must be at the bottom to work around the circular dependency with Relation.
+require 'persisters/relation'

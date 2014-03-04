@@ -1,17 +1,26 @@
 require 'spec_helper'
+require 'persister_spec_helper'
 require 'persisters/memory_persister'
 
 describe MemoryPersister do
   let(:type) { :test }
 
+  it_behaves_like(:persister) do
+    let(:persisted) { double('persisted object', attr1: 5) }
+    let(:persisted2) { double('persisted object 2', attr1: 5) }
+    let(:different_persisted) { double('different persisted object', attr1: 28) }
+
+    let(:where_params) { {attr1: 5} }
+  end
+
   describe '#save' do
-    it 'should return the id and data as a hash on success' do
+    it 'should return the id + data as struct on success' do
       id = double('id')
       data = double('data')
 
       result = subject.save(data, id)
 
-      result.should == {id => data}
+      result.should == OpenStruct.new(id: id, data: data)
     end
 
     it 'should remember the data by the given id' do
@@ -33,22 +42,13 @@ describe MemoryPersister do
   end
 
   describe '#load' do
-    it 'should return the id and data as a hash' do
-      id = double('id')
-      data = double('data')
-
-      subject.instance_variable_set(:@records, {id => data})
-
-      subject.load(id).should == {id => data}
-    end
-
     it 'should return only the appropriate id and data' do
       id = double('id')
       data = double('data')
 
       subject.instance_variable_set(:@records, {id => data, double('id2') => double('data2')})
 
-      subject.load(id).should == {id => data}
+      subject.load(id).should == OpenStruct.new({id: id, data: data})
     end
 
     it 'should return nil when given an invalid id' do
@@ -87,18 +87,18 @@ describe MemoryPersister do
 
       subject.instance_variable_set(:@records, records)
 
-      subject.all.should == records
+      subject.all.should == records.collect { |id, r| OpenStruct.new(id: id, data: r) }
     end
   end
 
   describe '#delete' do
-    it 'should return the deleted id and data as a hash' do
+    it 'should return the deleted id and data as a struct' do
       id = double('id')
-      records = {id => double('data')}
+      record = double('data')
 
-      subject.instance_variable_set(:@records, records.dup)
+      subject.instance_variable_set(:@records, {id => record})
 
-      subject.delete(id).should == records
+      subject.delete(id).should == OpenStruct.new(id: id, data: record)
     end
 
     it 'should delete the given id and data' do
