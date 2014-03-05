@@ -1,4 +1,5 @@
 require 'persisters/persister'
+require 'persisters/memory_persister'
 
 require 'roles/persisting'
 require 'roles/validating'
