@@ -4,7 +4,7 @@
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
-<title>class ExistenceValidator - RDoc Documentation</title>
+<title>class ClosureValidator - RDoc Documentation</title>
 
 <link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
 
@@ -47,7 +47,7 @@
     <nav id="file-list-section" class="section">
   <h3 class="section-header">Defined In</h3>
   <ul>
-    <li>lib/roles/validation/existence_validator.rb
+    <li>lib/roles/validation/closure_validator.rb
   </ul>
 </nav>
 
@@ -138,17 +138,11 @@
 </nav>
 
 <div id="documentation">
-  <h1 class="class">class ExistenceValidator</h1>
+  <h1 class="class">class ClosureValidator</h1>
 
   <div id="description" class="description">
     
-<p>Tests for whether the property referenced by an id is saved in the
-appropriate persister. This validator is stateful. <a
-href="ExistenceValidator.html#method-i-error_message">error_message</a>
-returns the errors from the most recent run of <a
-href="ExistenceValidator.html#method-i-valid-3F">valid?</a>.</p>
-
-<p>For more about validation, see <a href="Validating.html">Validating</a></p>
+<p>Takes a block, and uses it to determine validity,</p>
 
   </div><!-- description -->
 
@@ -174,36 +168,22 @@ href="ExistenceValidator.html#method-i-valid-3F">valid?</a>.</p>
         
         <div class="method-heading">
           <span class="method-name">new</span><span
-            class="method-args">(property, opts)</span>
+            class="method-args">(block, message_block)</span>
           <span class="method-click-advice">click to toggle source</span>
         </div>
         
 
         <div class="method-description">
           
-          <p>Takes the symbol name of the property to validate, and an options hash.</p>
-
-<p>Options include:</p>
-<ul><li><dl class="rdoc-list note-list"><dt><code>as</code>
-<dd>
-<p>The class of the type to search under</p>
-</dd></dl>
-</li><li><dl class="rdoc-list note-list"><dt><code>list</code>
-<dd>
-<p>If set, will treat <code>property</code> as an id list, checking existence
-of all.</p>
-</dd></dl>
-</li></ul>
+          
           
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/roles/validation/existence_validator.rb, line 14</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">property</span>, <span class="ruby-identifier">opts</span>)
-  <span class="ruby-ivar">@property</span> = <span class="ruby-identifier">property</span>
-  <span class="ruby-ivar">@type</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-value">:as</span>] <span class="ruby-operator">||</span> <span class="ruby-identifier">raise</span>(<span class="ruby-constant">ArgumentError</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">'ExistenceValidator requires as: be provided with a type.'</span>))
-  <span class="ruby-ivar">@list</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-value">:list</span>] <span class="ruby-operator">||</span> <span class="ruby-keyword">false</span>
-  <span class="ruby-ivar">@bad_ids</span> = []
+            <pre><span class="ruby-comment"># File lib/roles/validation/closure_validator.rb, line 3</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">block</span>, <span class="ruby-identifier">message_block</span>)
+  <span class="ruby-ivar">@block</span> = <span class="ruby-identifier">block</span>
+  <span class="ruby-ivar">@message_block</span> = <span class="ruby-identifier">message_block</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- new-source -->
           
@@ -237,15 +217,9 @@ of all.</p>
 
           
           <div class="method-source-code" id="error_message-source">
-            <pre><span class="ruby-comment"># File lib/roles/validation/existence_validator.rb, line 39</span>
+            <pre><span class="ruby-comment"># File lib/roles/validation/closure_validator.rb, line 12</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">error_message</span>(<span class="ruby-identifier">validated</span>)
-  <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@bad_ids</span>.<span class="ruby-identifier">empty?</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@list</span>
-      <span class="ruby-node">&quot;Those #{@type.to_s.demodulize.pluralize} (ids: #{@bad_ids.join(&quot;, &quot;)}) do not exist.&quot;</span>
-    <span class="ruby-keyword">else</span>
-      <span class="ruby-node">&quot;That #{@type.to_s.demodulize} (id: #{@bad_ids.first || &quot;nil&quot;}) does not exist.&quot;</span>
-    <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@message_block</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">validated</span>)
 <span class="ruby-keyword">end</span></pre>
           </div><!-- error_message-source -->
           
@@ -273,23 +247,9 @@ of all.</p>
 
           
           <div class="method-source-code" id="valid-3F-source">
-            <pre><span class="ruby-comment"># File lib/roles/validation/existence_validator.rb, line 21</span>
+            <pre><span class="ruby-comment"># File lib/roles/validation/closure_validator.rb, line 8</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">valid?</span>(<span class="ruby-identifier">validated</span>)
-  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">validated</span>
-
-  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@list</span>
-    <span class="ruby-identifier">ids</span> = <span class="ruby-identifier">validated</span>.<span class="ruby-identifier">send</span>(<span class="ruby-ivar">@property</span>) <span class="ruby-operator">||</span> []
-  <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">ids</span> = [<span class="ruby-identifier">validated</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">property_id</span>)]
-  <span class="ruby-keyword">end</span>
-
-  <span class="ruby-identifier">persister</span> = <span class="ruby-constant">Persister</span>.<span class="ruby-identifier">for</span>(<span class="ruby-ivar">@type</span>)
-
-  <span class="ruby-ivar">@bad_ids</span> = <span class="ruby-identifier">ids</span>.<span class="ruby-identifier">select</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">id</span><span class="ruby-operator">|</span>
-    <span class="ruby-keyword">not</span> <span class="ruby-identifier">persister</span>.<span class="ruby-identifier">exists?</span>(<span class="ruby-identifier">id</span>)
-  <span class="ruby-keyword">end</span>
-
-  <span class="ruby-ivar">@bad_ids</span>.<span class="ruby-identifier">empty?</span>
+  <span class="ruby-ivar">@block</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">validated</span>)
 <span class="ruby-keyword">end</span></pre>
           </div><!-- valid-3F-source -->
           

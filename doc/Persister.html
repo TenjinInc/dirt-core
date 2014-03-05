@@ -74,6 +74,8 @@
     
     <li><a href="#method-c-for">::for</a>
     
+    <li><a href="#method-c-transaction">::transaction</a>
+    
   </ul>
 </nav>
 
@@ -85,8 +87,6 @@
 
   <ul>
   
-    <li class="file"><a href="./Gemfile.html">Gemfile</a>
-  
     <li class="file"><a href="./README.html">README</a>
   
   </ul>
@@ -97,17 +97,29 @@
 
   <ul class="link-list">
   
-    <li><a href="./HerpZerp.html">HerpZerp</a>
+    <li><a href="./Dirt.html">Dirt</a>
   
-    <li><a href="./HerpZerp/DerpGerp.html">HerpZerp::DerpGerp</a>
+    <li><a href="./Dirt/MemoryPersister.html">Dirt::MemoryPersister</a>
   
-    <li><a href="./HerpZerp/DerpGerp/FooBar.html">HerpZerp::DerpGerp::FooBar</a>
+    <li><a href="./Dirt/MemoryRecord.html">Dirt::MemoryRecord</a>
   
-    <li><a href="./BlockValidator.html">BlockValidator</a>
+    <li><a href="./Dirt/MissingRecordError.html">Dirt::MissingRecordError</a>
+  
+    <li><a href="./Dirt/Model.html">Dirt::Model</a>
+  
+    <li><a href="./Dirt/NoPersisterError.html">Dirt::NoPersisterError</a>
+  
+    <li><a href="./Dirt/Relation.html">Dirt::Relation</a>
+  
+    <li><a href="./Dirt/Role.html">Dirt::Role</a>
+  
+    <li><a href="./Dirt/TooManyRecordsError.html">Dirt::TooManyRecordsError</a>
+  
+    <li><a href="./Dirt/TransactionError.html">Dirt::TransactionError</a>
+  
+    <li><a href="./ClosureValidator.html">ClosureValidator</a>
   
     <li><a href="./ExistenceValidator.html">ExistenceValidator</a>
-  
-    <li><a href="./FooBar.html">FooBar</a>
   
     <li><a href="./Persister.html">Persister</a>
   
@@ -115,13 +127,7 @@
   
     <li><a href="./PresenceValidator.html">PresenceValidator</a>
   
-    <li><a href="./Role.html">Role</a>
-  
-    <li><a href="./Scheduler.html">Scheduler</a>
-  
     <li><a href="./SelfExistenceValidator.html">SelfExistenceValidator</a>
-  
-    <li><a href="./TestPersister.html">TestPersister</a>
   
     <li><a href="./Validating.html">Validating</a>
   
@@ -152,6 +158,9 @@ persisters in the system. Register persisters here with for.</p>
 <p>+save(data)+     Saves a new record.</p>
 </li><li>
 <p>+save(data, id)+ Saves a record at the given id.</p>
+</li><li>
+<p>+transaction(&amp;block)+ Rolls back changes brought about during :yeild,
+and re-raises a TransactionError iff that error is raised in the yeild.</p>
 </li><li>
 <p>delete(id)       Deletes the record with the given id.</p>
 </li></ul>
@@ -192,7 +201,7 @@ persisters in the system. Register persisters here with for.</p>
 
           
           <div class="method-source-code" id="clear-source">
-            <pre><span class="ruby-comment"># File lib/persisters/persister.rb, line 31</span>
+            <pre><span class="ruby-comment"># File lib/persisters/persister.rb, line 34</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">clear</span>
   <span class="ruby-identifier">@@persisters</span> = <span class="ruby-keyword">nil</span>
 <span class="ruby-keyword">end</span></pre>
@@ -224,7 +233,7 @@ first argument is a class, it is converted to a symbol.</p>
 
           
           <div class="method-source-code" id="for-source">
-            <pre><span class="ruby-comment"># File lib/persisters/persister.rb, line 19</span>
+            <pre><span class="ruby-comment"># File lib/persisters/persister.rb, line 22</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-keyword">for</span>(<span class="ruby-identifier">klass</span>, <span class="ruby-identifier">persister</span>=<span class="ruby-keyword">nil</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">klass</span>.<span class="ruby-identifier">is_a?</span> <span class="ruby-constant">Class</span>
     <span class="ruby-identifier">klass</span> = <span class="ruby-identifier">klass</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">demodulize</span>.<span class="ruby-identifier">underscore</span>.<span class="ruby-identifier">to_sym</span>
@@ -233,7 +242,7 @@ first argument is a class, it is converted to a symbol.</p>
   <span class="ruby-identifier">@@persisters</span> <span class="ruby-operator">||=</span> {}
   <span class="ruby-identifier">@@persisters</span>[<span class="ruby-identifier">klass</span>] <span class="ruby-operator">||=</span> <span class="ruby-identifier">persister</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">persister</span>
 
-  <span class="ruby-identifier">@@persisters</span>[<span class="ruby-identifier">klass</span>]
+  <span class="ruby-identifier">@@persisters</span>[<span class="ruby-identifier">klass</span>] <span class="ruby-operator">||</span> <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Dirt</span><span class="ruby-operator">::</span><span class="ruby-constant">NoPersisterError</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">&quot;There is no persister for \&quot;#{klass.to_s.pluralize}\&quot;.&quot;</span>))
 <span class="ruby-keyword">end</span></pre>
           </div><!-- for-source -->
           
@@ -243,6 +252,48 @@ first argument is a class, it is converted to a symbol.</p>
 
         
       </div><!-- for-method -->
+
+    
+      <div id="method-c-transaction" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">transaction</span><span
+            class="method-args">(persister_list=[], &block)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="transaction-source">
+            <pre><span class="ruby-comment"># File lib/persisters/persister.rb, line 39</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">transaction</span>(<span class="ruby-identifier">persister_list</span>=[], &amp;<span class="ruby-identifier">block</span>)
+  <span class="ruby-keyword">begin</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">persister_list</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">1</span>
+      <span class="ruby-identifier">yeild</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">persister_list</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+      <span class="ruby-identifier">persister_list</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">transaction</span> &amp;<span class="ruby-identifier">block</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">transaction</span>(<span class="ruby-identifier">persister_list</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span>(<span class="ruby-identifier">persister_list</span>.<span class="ruby-identifier">size</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>)]) <span class="ruby-keyword">do</span>
+        <span class="ruby-identifier">persister_list</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">transaction</span> &amp;<span class="ruby-identifier">block</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Dirt</span><span class="ruby-operator">::</span><span class="ruby-constant">TransactionError</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+    {<span class="ruby-identifier">errors</span><span class="ruby-operator">:</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">message</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&quot;\n&quot;</span>)}
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- transaction-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- transaction-method -->
 
     
     </section><!-- public-class-method-details -->

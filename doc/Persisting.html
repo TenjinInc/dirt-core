@@ -59,7 +59,7 @@
     <nav id="parent-class-section" class="section">
   <h3 class="section-header">Parent</h3>
   
-  <p class="link"><a href="Role.html">Role</a>
+  <p class="link"><a href="Dirt/Role.html">Dirt::Role</a>
   
 </nav>
 
@@ -70,11 +70,15 @@
 
   <ul class="link-list">
     
+    <li><a href="#method-c-new">::new</a>
+    
     <li><a href="#method-i-3D-3D">#==</a>
     
     <li><a href="#method-i-delete">#delete</a>
     
     <li><a href="#method-i-load">#load</a>
+    
+    <li><a href="#method-i-load_by">#load_by</a>
     
     <li><a href="#method-i-save">#save</a>
     
@@ -89,8 +93,6 @@
 
   <ul>
   
-    <li class="file"><a href="./Gemfile.html">Gemfile</a>
-  
     <li class="file"><a href="./README.html">README</a>
   
   </ul>
@@ -101,17 +103,29 @@
 
   <ul class="link-list">
   
-    <li><a href="./HerpZerp.html">HerpZerp</a>
+    <li><a href="./Dirt.html">Dirt</a>
   
-    <li><a href="./HerpZerp/DerpGerp.html">HerpZerp::DerpGerp</a>
+    <li><a href="./Dirt/MemoryPersister.html">Dirt::MemoryPersister</a>
   
-    <li><a href="./HerpZerp/DerpGerp/FooBar.html">HerpZerp::DerpGerp::FooBar</a>
+    <li><a href="./Dirt/MemoryRecord.html">Dirt::MemoryRecord</a>
   
-    <li><a href="./BlockValidator.html">BlockValidator</a>
+    <li><a href="./Dirt/MissingRecordError.html">Dirt::MissingRecordError</a>
+  
+    <li><a href="./Dirt/Model.html">Dirt::Model</a>
+  
+    <li><a href="./Dirt/NoPersisterError.html">Dirt::NoPersisterError</a>
+  
+    <li><a href="./Dirt/Relation.html">Dirt::Relation</a>
+  
+    <li><a href="./Dirt/Role.html">Dirt::Role</a>
+  
+    <li><a href="./Dirt/TooManyRecordsError.html">Dirt::TooManyRecordsError</a>
+  
+    <li><a href="./Dirt/TransactionError.html">Dirt::TransactionError</a>
+  
+    <li><a href="./ClosureValidator.html">ClosureValidator</a>
   
     <li><a href="./ExistenceValidator.html">ExistenceValidator</a>
-  
-    <li><a href="./FooBar.html">FooBar</a>
   
     <li><a href="./Persister.html">Persister</a>
   
@@ -119,13 +133,7 @@
   
     <li><a href="./PresenceValidator.html">PresenceValidator</a>
   
-    <li><a href="./Role.html">Role</a>
-  
-    <li><a href="./Scheduler.html">Scheduler</a>
-  
     <li><a href="./SelfExistenceValidator.html">SelfExistenceValidator</a>
-  
-    <li><a href="./TestPersister.html">TestPersister</a>
   
     <li><a href="./Validating.html">Validating</a>
   
@@ -140,7 +148,7 @@
 
   <div id="description" class="description">
     
-<p><a href="Role.html">Role</a> for adding persistability to model objects.</p>
+<p>Role for adding persistability to model objects.</p>
 
   </div><!-- description -->
 
@@ -163,7 +171,7 @@
       <div id="attribute-i-id" class="method-detail">
         <div class="method-heading attribute-method-heading">
           <span class="method-name">id</span><span
-            class="attribute-access-type">[RW]</span>
+            class="attribute-access-type">[R]</span>
         </div>
 
         <div class="method-description">
@@ -178,6 +186,43 @@
 
     <!-- Methods -->
     
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(decorated, id=nil)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/roles/persisting.rb, line 8</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">decorated</span>, <span class="ruby-identifier">id</span>=<span class="ruby-keyword">nil</span>)
+  <span class="ruby-keyword">super</span>(<span class="ruby-identifier">decorated</span>)
+  <span class="ruby-ivar">@id</span> = <span class="ruby-identifier">id</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- new-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- new-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
      <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
       <h3 class="section-header">Public Instance Methods</h3>
 
@@ -198,9 +243,9 @@
 
           
           <div class="method-source-code" id="3D-3D-source">
-            <pre><span class="ruby-comment"># File lib/roles/persisting.rb, line 32</span>
+            <pre><span class="ruby-comment"># File lib/roles/persisting.rb, line 54</span>
 <span class="ruby-keyword">def</span> <span class="ruby-operator">==</span>(<span class="ruby-identifier">other</span>)
-  <span class="ruby-identifier">other</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">other</span>.<span class="ruby-identifier">instance_variable_get</span>(<span class="ruby-value">:@decorated</span>) <span class="ruby-operator">==</span> <span class="ruby-ivar">@decorated</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">other</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@id</span>
+  <span class="ruby-keyword">super</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">other</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@id</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- 3D-3D-source -->
           
@@ -228,9 +273,11 @@
 
           
           <div class="method-source-code" id="delete-source">
-            <pre><span class="ruby-comment"># File lib/roles/persisting.rb, line 28</span>
+            <pre><span class="ruby-comment"># File lib/roles/persisting.rb, line 48</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">delete</span>(<span class="ruby-identifier">id</span>)
-  <span class="ruby-constant">Persister</span>.<span class="ruby-identifier">for</span>(<span class="ruby-ivar">@decorated</span>).<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">id</span>)
+  <span class="ruby-identifier">assert_exists</span>(<span class="ruby-identifier">id</span>)
+
+  <span class="ruby-identifier">persister</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">id</span>)
 <span class="ruby-keyword">end</span></pre>
           </div><!-- delete-source -->
           
@@ -253,14 +300,20 @@
 
         <div class="method-description">
           
-          <p>Retrieves the decorated object from the appropriate persister.</p>
+          <p>Loads persisted data into the decorated object</p>
           
 
           
           <div class="method-source-code" id="load-source">
-            <pre><span class="ruby-comment"># File lib/roles/persisting.rb, line 23</span>
+            <pre><span class="ruby-comment"># File lib/roles/persisting.rb, line 24</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">load</span>(<span class="ruby-identifier">id</span>)
-  <span class="ruby-constant">Persister</span>.<span class="ruby-identifier">for</span>(<span class="ruby-ivar">@decorated</span>).<span class="ruby-identifier">load</span>(<span class="ruby-identifier">id</span>)
+  <span class="ruby-identifier">assert_exists</span>(<span class="ruby-identifier">id</span>)
+
+  <span class="ruby-identifier">loaded</span> = <span class="ruby-identifier">persister</span>.<span class="ruby-identifier">load</span>(<span class="ruby-identifier">id</span>)
+
+  <span class="ruby-identifier">chameleonize</span>(<span class="ruby-identifier">loaded</span>)
+
+  <span class="ruby-keyword">self</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- load-source -->
           
@@ -270,6 +323,44 @@
 
         
       </div><!-- load-method -->
+
+    
+      <div id="method-i-load_by" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">load_by</span><span
+            class="method-args">(attrs)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Loads from the first record that matches the given attributes.</p>
+          
+
+          
+          <div class="method-source-code" id="load_by-source">
+            <pre><span class="ruby-comment"># File lib/roles/persisting.rb, line 35</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">load_by</span>(<span class="ruby-identifier">attrs</span>)
+  <span class="ruby-identifier">record</span> = <span class="ruby-constant">Persister</span>.<span class="ruby-identifier">for</span>(<span class="ruby-ivar">@decorated</span>.<span class="ruby-identifier">class</span>).<span class="ruby-identifier">find</span>(<span class="ruby-identifier">attrs</span>)
+
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">record</span>
+    <span class="ruby-identifier">raise</span> <span class="ruby-constant">Dirt</span><span class="ruby-operator">::</span><span class="ruby-constant">MissingRecordError</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">&quot;No record matches #{attrs.collect { |pair| pair.join(' == ') }.join(', ')}.&quot;</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">chameleonize</span>(<span class="ruby-identifier">record</span>)
+
+  <span class="ruby-keyword">self</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- load_by-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- load_by-method -->
 
     
       <div id="method-i-save" class="method-detail ">
@@ -288,17 +379,13 @@
 
           
           <div class="method-source-code" id="save-source">
-            <pre><span class="ruby-comment"># File lib/roles/persisting.rb, line 9</span>
+            <pre><span class="ruby-comment"># File lib/roles/persisting.rb, line 14</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">save</span>(<span class="ruby-identifier">id</span>=<span class="ruby-keyword">nil</span>)
-  <span class="ruby-identifier">persister</span> = <span class="ruby-constant">Persister</span>.<span class="ruby-identifier">for</span>(<span class="ruby-ivar">@decorated</span>.<span class="ruby-identifier">class</span>)
-
   <span class="ruby-identifier">saved</span> = <span class="ruby-identifier">persister</span>.<span class="ruby-identifier">save</span>(<span class="ruby-ivar">@decorated</span>, <span class="ruby-identifier">id</span>)
 
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">saved</span>
-    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">id</span> = <span class="ruby-identifier">saved</span>.<span class="ruby-identifier">id</span>
+    <span class="ruby-ivar">@id</span> = <span class="ruby-identifier">saved</span>.<span class="ruby-identifier">id</span>
     <span class="ruby-keyword">self</span>
-  <span class="ruby-keyword">else</span>
-    <span class="ruby-keyword">nil</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- save-source -->
