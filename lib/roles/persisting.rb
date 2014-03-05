@@ -2,7 +2,7 @@ require 'roles/role'
 require 'persisters/persister'
 
 # Role for adding persistability to model objects.
-class Persisting < Role
+class Persisting < Dirt::Role
   attr_reader :id
 
   def initialize(decorated, id=nil)
@@ -36,7 +36,7 @@ class Persisting < Role
     record = Persister.for(@decorated.class).find(attrs)
 
     unless record
-      raise MissingRecordError.new("No record matches #{attrs.collect { |pair| pair.join(' == ') }.join(', ')}.")
+      raise Dirt::MissingRecordError.new("No record matches #{attrs.collect { |pair| pair.join(' == ') }.join(', ')}.")
     end
 
     chameleonize(record)
@@ -67,7 +67,7 @@ class Persisting < Role
 
   def assert_exists(id)
     unless persister.exists?(id)
-      raise MissingRecordError.new("That #{@decorated.class.to_s.demodulize.downcase} (id: #{id || 'nil'}) does not exist.")
+      raise Dirt::MissingRecordError.new("That #{@decorated.class.to_s.demodulize.downcase} (id: #{id || 'nil'}) does not exist.")
     end
   end
 end

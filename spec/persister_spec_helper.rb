@@ -117,7 +117,7 @@ shared_examples_for(:persister) do
     it { should respond_to(:where).with(1).argument }
 
     it 'should return a relation' do
-      subject.where(where_params).should be_a Relation
+      subject.where(where_params).should be_a Dirt::Relation
     end
 
     it 'should return only matching results' do

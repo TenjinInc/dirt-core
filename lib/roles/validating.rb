@@ -4,7 +4,7 @@
 # Each validator must respond to
 # * +valid?+        to return whether that validator passes, and
 # * +error_message+ to return any errors found when +valid?+ is +false+.
-class Validating < Role
+class Validating < Dirt::Role
   # Takes the decorated object and then the list of validators. See Role for more on decoration.
   def initialize(decorated, validators)
     super(decorated)

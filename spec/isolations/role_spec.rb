@@ -1,7 +1,7 @@
 require "rspec"
 require './lib/roles/role'
 
-module Scheduler
+module Dirt
   describe Role do
     let(:decorated) { double('decorated', test_method: nil) }
 

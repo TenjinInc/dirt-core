@@ -1,2 +1,4 @@
-class TooManyRecordsError < StandardError
+module Dirt
+  class TooManyRecordsError < StandardError
+  end
 end

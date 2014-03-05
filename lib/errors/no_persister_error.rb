@@ -1,3 +1,4 @@
-class NoPersisterError < StandardError
-
+module Dirt
+  class NoPersisterError < StandardError
+  end
 end

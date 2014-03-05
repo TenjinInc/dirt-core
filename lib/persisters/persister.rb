@@ -27,7 +27,7 @@ class Persister
     @@persisters ||= {}
     @@persisters[klass] ||= persister if persister
 
-    @@persisters[klass] || raise(NoPersisterError.new("There is no persister for \"#{klass.to_s.pluralize}\"."))
+    @@persisters[klass] || raise(Dirt::NoPersisterError.new("There is no persister for \"#{klass.to_s.pluralize}\"."))
   end
 
   # Forgets about all previously saved persisters.
@@ -47,7 +47,7 @@ class Persister
           persister_list.first.transaction &block
         end
       end
-    rescue TransactionError => e
+    rescue Dirt::TransactionError => e
       {errors: e.message.split("\n")}
     end
   end
