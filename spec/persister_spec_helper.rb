@@ -11,12 +11,9 @@ shared_examples_for(:persister) do
   describe '#save' do
     context 'one arg' do
       it { should respond_to(:save).with(1).arguments }
+
       it 'should return an object with an id' do
         subject.save(persisted).should respond_to(:id)
-      end
-
-      it 'should return an object with data' do
-        subject.save(persisted).should respond_to(:data)
       end
     end
 
@@ -27,8 +24,8 @@ shared_examples_for(:persister) do
         subject.save(persisted, id).should respond_to(:id)
       end
 
-      it 'should return an object with data' do
-        subject.save(persisted, id).should respond_to(:data)
+      it 'should return an object that can to_hash' do
+        subject.save(persisted, id).should respond_to(:to_hash)
       end
     end
   end
@@ -44,8 +41,8 @@ shared_examples_for(:persister) do
       subject.load(id).should respond_to(:id)
     end
 
-    it 'should return an object with data' do
-      subject.load(id).should respond_to(:data)
+    it 'should return an object that can to_hash' do
+      subject.load(id).should respond_to(:to_hash)
     end
   end
 
@@ -60,8 +57,8 @@ shared_examples_for(:persister) do
       subject.delete(id).should respond_to(:id)
     end
 
-    it 'should return an object with data' do
-      subject.delete(id).should respond_to(:data)
+    it 'should return an object that can to_hash' do
+      subject.delete(id).should respond_to(:to_hash)
     end
   end
 
@@ -105,19 +102,16 @@ shared_examples_for(:persister) do
       subject.all.each { |o| o.should respond_to(:id) }
     end
 
-    it 'should return an array of data-having objects' do
-      subject.all.each { |o| o.should respond_to(:data) }
+    it 'should return an array of to_hash-capable objects' do
+      subject.all.each { |o| o.should respond_to(:to_hash) }
     end
   end
 
   describe '#where' do
-    let(:match1) { persisted }
-    let(:match2) { persisted2 }
-
     before(:each) do
-      subject.save(match1)
-      subject.save(match2)
+      subject.save(persisted)
       subject.save(different_persisted)
+      subject.save(persisted2)
     end
 
     it { should respond_to(:where).with(1).argument }
@@ -127,18 +121,15 @@ shared_examples_for(:persister) do
     end
 
     it 'should return only matching results' do
-      subject.where(where_params).collect { |id, data| data }.should == [match1, match2]
+      subject.where(where_params).collect { |id, data| data }.should == [persisted, persisted2]
     end
   end
 
   describe '#find' do
-    let(:match1) { persisted }
-    let(:match2) { persisted2 }
-
     before(:each) do
       subject.save(different_persisted)
-      subject.save(match1)
-      subject.save(match2)
+      subject.save(persisted)
+      subject.save(persisted2)
     end
 
     it { should respond_to(:find).with(1).argument }
@@ -147,12 +138,12 @@ shared_examples_for(:persister) do
       subject.find(where_params).should respond_to(:id)
     end
 
-    it 'should return an object with data' do
-      subject.find(where_params).should respond_to(:data)
+    it 'should return an object that can to_hash' do
+      subject.find(where_params).should respond_to(:to_hash)
     end
 
     it 'should return the first matching result' do
-      subject.find(where_params).should == OpenStruct.new(id: 2, data: match1)
+      subject.find(where_params).should == OpenStruct.new(persisted.to_hash.merge(id: 2))
     end
   end
 end

@@ -57,8 +57,8 @@ class Persisting < Role
 
   private
   def chameleonize(record)
-    @id = record.delete_field(:id)
-    @decorated.update(record.data.to_hash)
+    @id = record.id
+    @decorated.update(record.to_hash.except(:id))
   end
 
   def persister

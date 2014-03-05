@@ -6,26 +6,26 @@ describe MemoryPersister do
   let(:type) { :test }
 
   it_behaves_like(:persister) do
-    let(:persisted) { double('persisted object', attr1: 5) }
-    let(:persisted2) { double('persisted object 2', attr1: 5) }
-    let(:different_persisted) { double('different persisted object', attr1: 28) }
+    let(:persisted) { double('persisted object', attr1: 5, to_hash: {attr1: 5}) }
+    let(:persisted2) { double('persisted object 2', attr1: 5, to_hash: {attr1: 5}) }
+    let(:different_persisted) { double('different persisted object', attr1: 28, to_hash: {attr1: 28}) }
 
     let(:where_params) { {attr1: 5} }
   end
 
   describe '#save' do
+    let(:data) { double('data', to_hash: {some: 'data'}) }
+
     it 'should return the id + data as struct on success' do
       id = double('id')
-      data = double('data')
 
       result = subject.save(data, id)
 
-      result.should == OpenStruct.new(id: id, data: data)
+      result.should == OpenStruct.new(data.to_hash.merge(id: id))
     end
 
     it 'should remember the data by the given id' do
       id = 3
-      data = double('data')
 
       subject.save(data, id)
 
@@ -33,8 +33,6 @@ describe MemoryPersister do
     end
 
     it 'should remember the data by a made up id when none given' do
-      data = double('data')
-
       subject.save(data, nil)
 
       subject.instance_variable_get(:@records).should == {1 => data}
@@ -42,13 +40,14 @@ describe MemoryPersister do
   end
 
   describe '#load' do
+    let(:data) { double('data', to_hash: {some: 'data'}) }
+
     it 'should return only the appropriate id and data' do
       id = double('id')
-      data = double('data')
 
       subject.instance_variable_set(:@records, {id => data, double('id2') => double('data2')})
 
-      subject.load(id).should == OpenStruct.new({id: id, data: data})
+      subject.load(id).should == OpenStruct.new(data.to_hash.merge(id: id))
     end
 
     it 'should return nil when given an invalid id' do
@@ -81,29 +80,29 @@ describe MemoryPersister do
 
   describe '#all' do
     it 'should return all of the appropriate id and data' do
-      records = {double('id1') => double('data1'),
-                 double('id2') => double('data2'),
-                 double('id3') => double('data3')}
+      records = {double('id1') => double('data1', to_hash: {attr1: double}),
+                 double('id2') => double('data2', to_hash: {attr1: double}),
+                 double('id3') => double('data3', to_hash: {attr1: double})}
 
       subject.instance_variable_set(:@records, records)
 
-      subject.all.should == records.collect { |id, r| OpenStruct.new(id: id, data: r) }
+      subject.all.should == records.collect { |id, r| OpenStruct.new(r.to_hash.merge(id: id)) }
     end
   end
 
   describe '#delete' do
+    let(:data) { double('data', to_hash: {some: 'data'}) }
+
     it 'should return the deleted id and data as a struct' do
       id = double('id')
-      record = double('data')
 
-      subject.instance_variable_set(:@records, {id => record})
+      subject.instance_variable_set(:@records, {id => data})
 
-      subject.delete(id).should == OpenStruct.new(id: id, data: record)
+      subject.delete(id).should == OpenStruct.new(data.to_hash.merge(id: id))
     end
 
     it 'should delete the given id and data' do
       id = double('id')
-      data = double('data')
 
       subject.instance_variable_set(:@records, {id => data})
 
@@ -115,10 +114,9 @@ describe MemoryPersister do
     it 'should delete only the appropriate id and data' do
       id1 = double('id1')
       id2 = double('id2')
-      data1 = double('data1')
       data2 = double('data2')
 
-      subject.instance_variable_set(:@records, {id1 => data1, id2 => data2})
+      subject.instance_variable_set(:@records, {id1 => data, id2 => data2})
 
       subject.delete(id1)
 

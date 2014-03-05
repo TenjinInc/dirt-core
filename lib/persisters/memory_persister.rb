@@ -14,27 +14,27 @@ class MemoryPersister
 
     @records[id] = data
 
-    OpenStruct.new(id: id, data: @records[id])
+    MemoryRecord.new(data.to_hash.merge(id: id))
   end
 
   # Returns the record with the given id.
   def load(id)
-    loaded = @records[id]
+    record = @records[id]
 
-    loaded ? OpenStruct.new(id: id, data: loaded) : nil
+    record ? MemoryRecord.new(record.to_hash.merge(id: id)) : nil
   end
 
   # Returns the list of all records.
   def all
     @records.collect do |id, r|
-      OpenStruct.new(id: id, data: r)
+      MemoryRecord.new(r.to_hash.merge(id: id))
     end
   end
 
   # Removes the record with the given id.
   def delete(id)
     if @records.has_key?(id)
-      OpenStruct.new(id: id, data: @records.delete(id))
+      MemoryRecord.new(@records.delete(id).to_hash.merge(id: id))
     end
   end
 
@@ -56,6 +56,10 @@ class MemoryPersister
 
     Relation.new(matches)
   end
+end
+
+class MemoryRecord < OpenStruct
+  alias_method :to_hash, :marshal_dump
 end
 
 # This must be at the bottom to work around the circular dependency with Relation.

@@ -3,7 +3,7 @@ require './lib/roles/persisting'
 require './lib/persisters/memory_persister'
 
 describe Persisting do
-  let(:decorated) { double('decorated') }
+  let(:decorated) { double('decorated', to_hash: {some: 'data'}) }
 
   subject do
     Persisting.new(decorated)
@@ -54,8 +54,6 @@ describe Persisting do
     let(:id) { double('id') }
 
     context 'persistence completes' do
-      let(:saved) { {id => double('a saved thingy')} }
-
       context 'with id' do
         it 'should call persister save with id' do
           persister.should_receive(:save).with(decorated, id)
@@ -141,7 +139,7 @@ describe Persisting do
   context '#load' do
     context 'there is a record by that id' do
       let(:id) { double('id') }
-      let(:decorated_hash) { double('decorated\'s hash') }
+      let(:decorated_hash) { {some: 'data and things'} }
 
       before(:each) do
         persister.save(decorated, id)
@@ -182,9 +180,9 @@ describe Persisting do
     let(:id2) { double('id2') }
     let(:id3) { double('id3') }
 
-    let(:record1) { double('record1') }
-    let(:record2) { double('record2') }
-    let(:record3) { double('record3') }
+    let(:record1) { double('record1', to_hash: {some: 'data1'}) }
+    let(:record2) { double('record2', to_hash: {some: 'data2'}) }
+    let(:record3) { double('record3', to_hash: {some: 'data3'}) }
 
     before(:each) do
       persister.save(record1, id1)
@@ -193,7 +191,7 @@ describe Persisting do
     end
 
     context 'there is a record by that attribute' do
-      let(:record_hash) { double('record2\'s hash') }
+      let(:record_hash) { {attr => 'record2\'s hash'} }
 
       before(:each) do
         record1.stub(attr).and_return(double('something else'))
@@ -223,7 +221,7 @@ describe Persisting do
     end
 
     context 'multiple records have that attribute' do
-      let(:record_hash) { double('record2\'s hash') }
+      let(:record_hash) { {record_attr: 'and a value'} }
 
       before(:each) do
         record1.stub(attr).and_return(double('something else'))

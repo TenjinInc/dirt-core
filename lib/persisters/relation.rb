@@ -9,7 +9,7 @@ class Relation < MemoryPersister
 
   def first
     match = @records.first
-    match ? OpenStruct.new(id: match.first, data: match.last) : nil
+    match ? MemoryRecord.new(match.last.to_hash.merge(id: match.first)) : nil
   end
 
   def collect(&block)
