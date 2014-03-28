@@ -2,7 +2,7 @@ module Dirt
   require 'persisters/memory_persister'
 
   class Relation < MemoryPersister
-    @records = {}
+    @records = []
 
     def initialize(records)
       @records = records
