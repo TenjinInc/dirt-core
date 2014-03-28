@@ -54,6 +54,8 @@ module Dirt
         same_id = (params.delete(:id) || id) == id
 
         params.all? { |attr, val| record.send(attr) == val } && same_id
+      end.collect do |id, record|
+        MemoryRecord.new(record.to_hash.merge(id: id))
       end
 
       Relation.new(matches)

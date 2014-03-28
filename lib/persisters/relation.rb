@@ -9,8 +9,10 @@ module Dirt
     end
 
     def first
-      match = @records.first
-      match ? MemoryRecord.new(match.last.to_hash.merge(id: match.first)) : nil
+      @records.first
+
+      #match = @records.first
+      #match ? match : nil
     end
 
     def collect(&block)

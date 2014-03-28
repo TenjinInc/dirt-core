@@ -47,18 +47,22 @@ shared_examples_for(:persister) do
   end
 
   describe '#delete' do
-    before(:each) do
-      subject.save(persisted, id)
-    end
-
     it { should respond_to(:delete).with(1).argument }
 
-    it 'should return an object with an id' do
-      subject.delete(id).should respond_to(:id)
+    context 'exists' do
+      before(:each) do
+        subject.save(persisted, id)
+      end
+
+      it 'should return true' do
+        subject.delete(id).should be_true
+      end
     end
 
-    it 'should return an object that can to_hash' do
-      subject.delete(id).should respond_to(:to_hash)
+    context 'does not exist' do
+      it 'should return false' do
+        subject.delete(id).should be_false
+      end
     end
   end
 
@@ -121,7 +125,7 @@ shared_examples_for(:persister) do
     end
 
     it 'should return only matching results' do
-      subject.where(where_params).collect { |id, data| data }.should == [persisted, persisted2]
+      subject.where(where_params).collect { |data| data.to_hash.except(:id) }.should == [persisted.to_hash, persisted2.to_hash]
     end
   end
 
@@ -143,7 +147,7 @@ shared_examples_for(:persister) do
     end
 
     it 'should return the first matching result' do
-      subject.find(where_params).should == OpenStruct.new(persisted.to_hash.merge(id: 2))
+      subject.find(where_params).id.should == 2
     end
   end
 end
