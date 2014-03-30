@@ -56,42 +56,22 @@ module Dirt
       let(:id) { double('id') }
 
       context 'persistence completes' do
-        context 'with id' do
-          it 'should call persister save with id' do
-            persister.should_receive(:save).with(decorated, id)
+        it 'should call persister save with nil id' do
+          persister.should_receive(:save).with(decorated)
 
-            subject.save(id)
-          end
-
-          it 'should remember the id' do
-            subject.save(id)
-
-            subject.id.should == id
-          end
-
-          it 'should return itself' do
-            subject.save(id).should be subject
-          end
+          subject.save()
         end
 
-        context 'no id' do
-          it 'should call persister save with nil id' do
-            persister.should_receive(:save).with(decorated, nil)
+        it 'should remember the id assinged by persister' do
+          persister.stub(:save).and_return(OpenStruct.new(id: id, data: decorated))
 
-            subject.save()
-          end
+          subject.save()
 
-          it 'should remember the id assinged by persister' do
-            persister.stub(:save).and_return(OpenStruct.new(id: id, data: decorated))
+          subject.id.should == id
+        end
 
-            subject.save()
-
-            subject.id.should == id
-          end
-
-          it 'should return itself' do
-            subject.save(id).should be subject
-          end
+        it 'should return itself' do
+          subject.save().should be subject
         end
       end
 
@@ -100,51 +80,30 @@ module Dirt
           persister.stub(:save).and_return(nil)
         end
 
-        context 'with id' do
-          it 'should call persister save with id' do
-            persister.should_receive(:save).with(decorated, id)
+        it 'should call persister save with nil id' do
+          persister.should_receive(:save).with(decorated)
 
-            subject.save(id)
-          end
-
-          it 'should not remember the id' do
-            subject.save(id)
-
-            subject.id.should == nil
-          end
-
-          it 'should return nil' do
-            subject.save(id).should be nil
-          end
+          subject.save()
         end
 
-        context 'no id' do
-          it 'should call persister save with nil id' do
-            persister.should_receive(:save).with(decorated, nil)
+        it 'should not remember an id' do
+          subject.save()
 
-            subject.save()
-          end
+          subject.id.should == nil
+        end
 
-          it 'should not remember an id' do
-            subject.save()
-
-            subject.id.should == nil
-          end
-
-          it 'should return nil' do
-            subject.save(id).should be nil
-          end
+        it 'should return nil' do
+          subject.save().should be nil
         end
       end
     end
 
     context '#load' do
       context 'there is a record by that id' do
-        let(:id) { double('id') }
+        let(:id) { persister.save(decorated).id }
         let(:decorated_hash) { {some: 'data and things'} }
 
         before(:each) do
-          persister.save(decorated, id)
           decorated.stub(:to_hash).and_return(decorated_hash)
         end
 
@@ -178,18 +137,14 @@ module Dirt
       let(:attr) { :test_attr }
       let(:value) { double('test value') }
 
-      let(:id1) { double('id1') }
-      let(:id2) { double('id2') }
-      let(:id3) { double('id3') }
-
       let(:record1) { double('record1', to_hash: {some: 'data1'}) }
       let(:record2) { double('record2', to_hash: {some: 'data2'}) }
       let(:record3) { double('record3', to_hash: {some: 'data3'}) }
 
       before(:each) do
-        persister.save(record1, id1)
-        persister.save(record2, id2)
-        persister.save(record3, id3)
+        persister.save(record1)
+        persister.save(record2)
+        persister.save(record3)
       end
 
       context 'there is a record by that attribute' do
@@ -218,7 +173,7 @@ module Dirt
         it 'should keep the found id' do
           decorated.stub(:update)
 
-          subject.load_by(attr => value).id.should == id3
+          subject.load_by(attr => value).id.should == 3
         end
       end
 
@@ -248,7 +203,7 @@ module Dirt
         it 'should keep the found id' do
           decorated.stub(:update)
 
-          subject.load_by(attr => value).id.should == id2
+          subject.load_by(attr => value).id.should == 2
         end
       end
 
@@ -269,10 +224,8 @@ module Dirt
 
     context '#delete' do
       context 'there is a record by that id' do
-        let(:id) { double('id') }
+        let(:id) { persister.save(decorated).id }
         it 'should return the persisting-wrapped deleted object' do
-          persister.save(decorated, id)
-
           deleted = Persisting.new(decorated)
 
           persister.stub(:delete).and_return(deleted)

@@ -11,8 +11,8 @@ class Persisting < Dirt::Role
   end
 
   # Saves the decorated object with the appropriate persister.
-  def save(id=nil)
-    saved = persister.save(@decorated, id)
+  def save()
+    saved = persister.save(@decorated)
 
     if saved
       @id = saved.id

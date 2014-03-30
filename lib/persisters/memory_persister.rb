@@ -1,9 +1,8 @@
 module Dirt
-
   require 'errors/missing_record_error'
   require 'ostruct'
 
-# An in-memory implementation of persistence.
+  # An in-memory implementation of persistence.
   class MemoryPersister
     def initialize
       @next_id = 0
@@ -12,6 +11,8 @@ module Dirt
 
     # Saves the record to the array either under the given id, or a new one if none is provided,
     def save(data, id=nil)
+      raise MissingRecordError.new("There is no record by id #{id}.") if id && !@records[id]
+
       id ||= @next_id += 1
 
       @records[id] = data

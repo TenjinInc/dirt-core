@@ -18,19 +18,23 @@ module Dirt
       let(:data) { double('data', to_hash: {some: 'data'}) }
 
       it 'should return the id + data as struct on success' do
-        id = double('id')
+        result = subject.save(data)
 
-        result = subject.save(data, id)
-
-        result.should == OpenStruct.new(data.to_hash.merge(id: id))
+        result.should == OpenStruct.new(data.to_hash.merge(id: result.id))
       end
 
       it 'should remember the data by the given id' do
         id = 3
 
+        fake1 = double('other data', to_hash: {})
+        fake2 = double('another data', to_hash: {})
+
+        subject.save(fake1)
+        subject.save(fake2)
+        subject.save(double('replaced', to_hash: {}))
         subject.save(data, id)
 
-        subject.instance_variable_get(:@records).should == {id => data}
+        subject.instance_variable_get(:@records).should == {1 => fake1, 2 => fake2, id => data}
       end
 
       it 'should remember the data by a made up id when none given' do

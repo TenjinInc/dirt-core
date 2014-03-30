@@ -6,8 +6,6 @@
 #
 # using, for example, the block syntax
 shared_examples_for(:persister) do
-  let(:id) { 1 }
-
   describe '#save' do
     context 'one arg' do
       it { should respond_to(:save).with(1).arguments }
@@ -20,20 +18,30 @@ shared_examples_for(:persister) do
     context 'specific id' do
       it { should respond_to(:save).with(2).arguments }
 
-      it 'should return an object with an id' do
-        subject.save(persisted, id).should respond_to(:id)
+      context 'it pre-exists' do
+        let(:id) { subject.save(persisted).id }
+
+        it 'should return an object with an id' do
+          subject.save(persisted, id).should respond_to(:id)
+        end
+
+        it 'should return an object that can to_hash' do
+          subject.save(persisted, id).should respond_to(:to_hash)
+        end
       end
 
-      it 'should return an object that can to_hash' do
-        subject.save(persisted, id).should respond_to(:to_hash)
+      context 'it does not exist' do
+        let(:id) { 1 }
+
+        it 'should raise an error' do
+          expect { subject.save(persisted, id) }.to raise_error(Dirt::MissingRecordError, "There is no record by id #{id}.")
+        end
       end
     end
   end
 
   describe '#load' do
-    before(:each) do
-      subject.save(persisted, id)
-    end
+    let(:id) { subject.save(persisted).id }
 
     it { should respond_to(:load).with(1).argument }
 
@@ -50,9 +58,7 @@ shared_examples_for(:persister) do
     it { should respond_to(:delete).with(1).argument }
 
     context 'exists' do
-      before(:each) do
-        subject.save(persisted, id)
-      end
+      let(:id) { subject.save(persisted).id }
 
       it 'should return true' do
         subject.delete(id).should be_true
@@ -60,6 +66,8 @@ shared_examples_for(:persister) do
     end
 
     context 'does not exist' do
+      let(:id) { 1 }
+
       it 'should return false' do
         subject.delete(id).should be_false
       end
@@ -70,9 +78,7 @@ shared_examples_for(:persister) do
     it { should respond_to(:exists?) }
 
     context 'it does' do
-      before(:each) do
-        subject.save(persisted, id)
-      end
+      let(:id) { subject.save(persisted).id }
 
       it 'should return true' do
         subject.exists?(id).should be_true
@@ -80,6 +86,8 @@ shared_examples_for(:persister) do
     end
 
     context 'it does not' do
+      let(:id) { 1 }
+
       it 'should return true' do
         subject.exists?(id).should be_false
       end
