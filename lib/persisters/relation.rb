@@ -26,5 +26,13 @@ module Dirt
     def empty?
       @records.empty?
     end
+
+    def all?(&block)
+      every = true
+
+      @records.each do |record|
+        every &= yield record
+      end
+    end
   end
 end

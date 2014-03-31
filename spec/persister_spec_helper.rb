@@ -128,12 +128,26 @@ shared_examples_for(:persister) do
 
     it { should respond_to(:where).with(1).argument }
 
-    it 'should return a relation' do
-      subject.where(where_params).should be_a Dirt::Relation
+    it 'should return only matching results' do
+      subject.where(where_params).all? do |data|
+        where_params.all? { |key, value| data.send(key) == value }
+      end.should be_true
     end
 
-    it 'should return only matching results' do
-      subject.where(where_params).collect { |data| data.to_hash.except(:id) }.should == [persisted.to_hash, persisted2.to_hash]
+    describe 'relation returned' do
+      let(:relation) { subject.where(where_params) }
+
+      it 'should respond to where' do
+        relation.should respond_to(:where)
+      end
+
+      it 'should respond to first' do
+        relation.should respond_to(:first)
+      end
+
+      it 'should respond to all?' do
+        relation.should respond_to(:all?)
+      end
     end
   end
 
@@ -155,7 +169,7 @@ shared_examples_for(:persister) do
     end
 
     it 'should return the first matching result' do
-      subject.find(where_params).id.should == 2
+      subject.find(where_params).to_hash.except(:id).should == persisted.to_hash.except(:id)
     end
   end
 end
