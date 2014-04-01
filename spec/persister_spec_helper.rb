@@ -121,9 +121,9 @@ shared_examples_for(:persister) do
 
   describe '#where' do
     before(:each) do
-      subject.save(persisted)
+      @id_match1 = subject.save(persisted).id
       subject.save(different_persisted)
-      subject.save(persisted2)
+      @id_match2 = subject.save(persisted2).id
     end
 
     it { should respond_to(:where).with(1).argument }
@@ -132,6 +132,12 @@ shared_examples_for(:persister) do
       subject.where(where_params).all? do |data|
         where_params.all? { |key, value| data.send(key) == value }
       end.should be_true
+    end
+
+    it 'should the correct matching results' do
+      subject.where(where_params).collect do |record|
+        record.id
+      end.should == [@id_match1, @id_match2]
     end
 
     describe 'relation returned' do
@@ -154,7 +160,7 @@ shared_examples_for(:persister) do
   describe '#find' do
     before(:each) do
       subject.save(different_persisted)
-      subject.save(persisted)
+      @id = subject.save(persisted).id
       subject.save(persisted2)
     end
 
@@ -169,7 +175,7 @@ shared_examples_for(:persister) do
     end
 
     it 'should return the first matching result' do
-      subject.find(where_params).to_hash.except(:id).should == persisted.to_hash.except(:id)
+      subject.find(where_params).id.should == @id
     end
   end
 end
