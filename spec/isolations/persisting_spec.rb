@@ -57,7 +57,7 @@ module Dirt
 
       context 'persistence completes' do
         it 'should call persister save with nil id' do
-          persister.should_receive(:save).with(decorated)
+          persister.should_receive(:save).with(decorated, nil)
 
           subject.save()
         end
@@ -81,7 +81,7 @@ module Dirt
         end
 
         it 'should call persister save with nil id' do
-          persister.should_receive(:save).with(decorated)
+          persister.should_receive(:save).with(decorated, nil)
 
           subject.save()
         end
