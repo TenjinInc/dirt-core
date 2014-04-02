@@ -5,6 +5,9 @@ require 'persisters/memory_persister'
 module Dirt
   describe MemoryPersister do
     let(:type) { :test }
+    subject{MemoryPersister.new do |*args|
+      double('Persisting', *args)
+    end}
 
     it_behaves_like(:persister) do
       let(:persisted) { double('persisted object', attr1: 5, to_hash: {attr1: 5}) }
