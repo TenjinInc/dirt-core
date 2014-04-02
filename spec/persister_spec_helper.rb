@@ -6,6 +6,25 @@
 #
 # using, for example, the block syntax
 shared_examples_for(:persister) do
+  describe '#new' do
+    context 'no args' do
+      it 'should return a non-nil' do
+        subject.new.should_not be_nil
+      end
+    end
+    context 'some args' do
+      before(:each) do
+        @new_obj = subject.new(var1: 'value1', var2: 'value2')
+      end
+      it 'should populate var1 with value1' do
+        @new_obj.var1.should == 'value1'
+      end
+      it 'should populate var2 with value2' do
+        @new_obj.var2.should == 'value2'
+      end
+    end
+  end
+
   describe '#save' do
     context 'one arg' do
       it { should respond_to(:save).with(1).arguments }

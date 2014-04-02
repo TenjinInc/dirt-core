@@ -4,9 +4,15 @@ module Dirt
 
   # An in-memory implementation of persistence.
   class MemoryPersister
-    def initialize
+    def initialize(&block)
       @next_id = 0
       @records = {}
+      @new_maker = block
+    end
+
+    def new(*args)
+      #MemoryRecord.new(*args)
+      @new_maker.yield(*args)
     end
 
     # Saves the record to the array either under the given id, or a new one if none is provided,

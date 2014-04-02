@@ -1,10 +1,11 @@
 require 'spec_helper'
-require 'models/model'
+require 'models/model_behaviour'
 
 module Dirt
-  describe Model do
+  describe ModelBehaviour do
     # Need to give it a attributes for testing
     class Model
+      include ModelBehaviour
       attr_accessor :test_variable1, :test_variable2
     end
 

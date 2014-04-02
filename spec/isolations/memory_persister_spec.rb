@@ -5,6 +5,9 @@ require 'persisters/memory_persister'
 module Dirt
   describe MemoryPersister do
     let(:type) { :test }
+    subject{MemoryPersister.new do |*args|
+      double('Persisting', *args)
+    end}
 
     it_behaves_like(:persister) do
       let(:persisted) { double('persisted object', attr1: 5, to_hash: {attr1: 5}) }
@@ -12,6 +15,17 @@ module Dirt
       let(:different_persisted) { double('different persisted object', attr1: 28, to_hash: {attr1: 28}) }
 
       let(:where_params) { {attr1: 5} }
+    end
+
+    describe '#new' do
+      it 'should return an object' do
+        subject.new.should_not be_nil
+      end
+      context 'called with args' do
+        it 'should populate the new object with args data' do
+          subject.new(arg1: 'val1').arg1.should == 'val1'
+        end
+      end
     end
 
     describe '#save' do
