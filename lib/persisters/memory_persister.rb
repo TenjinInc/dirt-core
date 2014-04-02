@@ -9,6 +9,10 @@ module Dirt
       @records = {}
     end
 
+    def new(*args)
+      MemoryRecord.new(*args)
+    end
+
     # Saves the record to the array either under the given id, or a new one if none is provided,
     def save(data, id=nil)
       raise MissingRecordError.new("There is no record by id #{id}.") if id && !@records[id]

@@ -1,10 +1,23 @@
 module Dirt
 # Common class for all model objects within the system.
-  class Model
-    # Initializes a new instance of the class. The parameter hash takes whatever properties of the
-    # specific model type as keys.
-    def initialize(params={})
-      self.update(params)
+  module ModelBehaviour
+    def self.included(klass)
+      klass.extend ClassMethods
+    end
+
+    module ClassMethods
+      # Initializes a new instance of the class. The parameter hash takes whatever properties of the
+      # specific model type as keys.
+      def new(*args)
+        obj = nil
+        begin
+          obj = super
+        rescue ArgumentError
+          obj = super()
+        end
+        obj.update(args[0]) if args[0].is_a? Hash
+        obj
+      end
     end
 
     # Updates the properties of this instance. The parameter hash takes whatever properties of the

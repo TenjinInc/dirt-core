@@ -14,6 +14,17 @@ module Dirt
       let(:where_params) { {attr1: 5} }
     end
 
+    describe '#new' do
+      it 'should return an object' do
+        subject.new.should_not be_nil
+      end
+      context 'called with args' do
+        it 'should populate the new object with args data' do
+          subject.new(arg1: 'val1').arg1.should == 'val1'
+        end
+      end
+    end
+
     describe '#save' do
       let(:data) { double('data', to_hash: {some: 'data'}) }
 
