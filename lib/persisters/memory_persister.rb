@@ -17,7 +17,7 @@ module Dirt
 
     # Saves the record to the array either under the given id, or a new one if none is provided,
     def save(data, id=nil)
-      raise MissingRecordError.new("There is no record by id #{id}.") if id && !@records[id]
+      assert_exists(id)
 
       id ||= @next_id += 1
 
@@ -28,6 +28,8 @@ module Dirt
 
     # Returns the record with the given id.
     def load(id)
+      assert_exists(id)
+
       record = @records[id]
 
       record ? MemoryRecord.new(record.to_hash.merge(id: id)) : nil
@@ -66,6 +68,11 @@ module Dirt
       end
 
       Relation.new(matches)
+    end
+
+    private
+    def assert_exists(id)
+      raise MissingRecordError.new("There is no record by id #{id}.") if id && !@records[id]
     end
   end
 

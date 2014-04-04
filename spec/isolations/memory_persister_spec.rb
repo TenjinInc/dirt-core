@@ -68,14 +68,6 @@ module Dirt
 
         subject.load(id).should == OpenStruct.new(data.to_hash.merge(id: id))
       end
-
-      it 'should return nil when given an invalid id' do
-        id = double('id3')
-
-        subject.instance_variable_set(:@records, {double('id') => double('data'), double('id2') => double('data2')})
-
-        subject.load(id).should == nil
-      end
     end
 
     describe '#exists?' do

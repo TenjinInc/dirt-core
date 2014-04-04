@@ -60,16 +60,26 @@ shared_examples_for(:persister) do
   end
 
   describe '#load' do
-    let(:id) { subject.save(persisted).id }
+    context 'it exists' do
+      let(:id) { subject.save(persisted).id }
 
-    it { should respond_to(:load).with(1).argument }
+      it { should respond_to(:load).with(1).argument }
 
-    it 'should return an object with an id' do
-      subject.load(id).should respond_to(:id)
+      it 'should return an object with an id' do
+        subject.load(id).should respond_to(:id)
+      end
+
+      it 'should return an object that can to_hash' do
+        subject.load(id).should respond_to(:to_hash)
+      end
     end
 
-    it 'should return an object that can to_hash' do
-      subject.load(id).should respond_to(:to_hash)
+    context 'it does not exist' do
+      let(:id) { 1 }
+
+      it 'should raise an error' do
+        expect { subject.load(id) }.to raise_error(Dirt::MissingRecordError, "There is no record by id #{id}.")
+      end
     end
   end
 
