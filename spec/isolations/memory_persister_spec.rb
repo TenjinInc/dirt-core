@@ -5,9 +5,11 @@ require 'persisters/memory_persister'
 module Dirt
   describe MemoryPersister do
     let(:type) { :test }
-    subject{MemoryPersister.new do |*args|
-      double('Persisting', *args)
-    end}
+    subject do
+      MemoryPersister.new do |*args|
+        double('Persisting', *args)
+      end
+    end
 
     it_behaves_like(:persister) do
       let(:persisted) { double('persisted object', attr1: 5, to_hash: {attr1: 5}) }
@@ -18,9 +20,14 @@ module Dirt
     end
 
     describe '#new' do
+      it 'shoudl explode when not given a block' do
+        expect { MemoryPersister.new.new }.to raise_error(RuntimeError, 'Cannot create a new instance without a block given to init.')
+      end
+
       it 'should return an object' do
         subject.new.should_not be_nil
       end
+
       context 'called with args' do
         it 'should populate the new object with args data' do
           subject.new(arg1: 'val1').arg1.should == 'val1'

@@ -11,7 +11,7 @@ module Dirt
     end
 
     def new(*args)
-      #MemoryRecord.new(*args)
+      raise RuntimeError.new('Cannot create a new instance without a block given to init.') unless @new_maker
       @new_maker.yield(*args)
     end
 
