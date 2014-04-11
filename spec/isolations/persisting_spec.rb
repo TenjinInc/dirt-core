@@ -11,7 +11,7 @@ module Dirt
       Persisting.new(decorated)
     end
 
-    let(:persister) { MemoryPersister.new }
+    let(:persister) { MemoryPersister.new(:some_type) }
 
     before(:each) do
       Persister.for(:mock, persister)

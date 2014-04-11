@@ -6,7 +6,7 @@ module Dirt
   describe MemoryPersister do
     let(:type) { :test }
     subject do
-      MemoryPersister.new do |*args|
+      MemoryPersister.new(:some_type) do |*args|
         double('Persisting', *args)
       end
     end
@@ -20,8 +20,8 @@ module Dirt
     end
 
     describe '#new' do
-      it 'shoudl explode when not given a block' do
-        expect { MemoryPersister.new.new }.to raise_error(RuntimeError, 'Cannot create a new instance without a block given to init.')
+      it 'should explode when not given a block' do
+        expect { MemoryPersister.new(:some_type).new }.to raise_error(RuntimeError, 'Cannot create a new instance without a block given to init.')
       end
 
       it 'should return an object' do

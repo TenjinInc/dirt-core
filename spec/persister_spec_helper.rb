@@ -53,7 +53,7 @@ shared_examples_for(:persister) do
         let(:id) { 1 }
 
         it 'should raise an error' do
-          expect { subject.save(persisted, id) }.to raise_error(Dirt::MissingRecordError, "There is no record by id #{id}.")
+          expect { subject.save(persisted, id) }.to raise_error(Dirt::MissingRecordError, "That some_type (id: 1) does not exist.")
         end
       end
     end
@@ -78,7 +78,7 @@ shared_examples_for(:persister) do
       let(:id) { 1 }
 
       it 'should raise an error' do
-        expect { subject.load(id) }.to raise_error(Dirt::MissingRecordError, "There is no record by id #{id}.")
+        expect { subject.load(id) }.to raise_error(Dirt::MissingRecordError, "That some_type (id: #{id}) does not exist.")
       end
     end
   end

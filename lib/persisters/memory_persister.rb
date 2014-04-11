@@ -4,7 +4,8 @@ module Dirt
 
   # An in-memory implementation of persistence.
   class MemoryPersister
-    def initialize(&block)
+    def initialize(type, &block)
+      @type = type
       @next_id = 0
       @records = {}
       @new_maker = block
@@ -72,7 +73,7 @@ module Dirt
 
     private
     def assert_exists(id)
-      raise MissingRecordError.new("There is no record by id #{id}.") if id && !@records[id]
+      raise MissingRecordError.new("That #{@type} (id: #{id}) does not exist.") if id && !@records[id]
     end
   end
 
