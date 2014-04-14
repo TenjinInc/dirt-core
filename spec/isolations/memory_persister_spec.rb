@@ -1,5 +1,5 @@
-require 'spec_helper'
-require 'persister_spec_helper'
+require 'spec/spec_helper'
+require 'spec/persister_spec_helper'
 require 'persisters/memory_persister'
 
 module Dirt

@@ -1,6 +1,6 @@
-require 'spec_helper'
-require './lib/roles/persisting'
-require './lib/persisters/memory_persister'
+require 'spec/spec_helper'
+require 'roles/persisting'
+require 'persisters/memory_persister'
 
 module Dirt
 

@@ -10,5 +10,5 @@ Gem::Specification.new do |s|
 
   s.files        = `git ls-files`.split("\n").reject { |path| path =~ /\.gitignore$|.*\.gemspec$/ }
 
-  #s.require_path = ['lib', 'spec']
+  s.require_path = 'lib'
 end
