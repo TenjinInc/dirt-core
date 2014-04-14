@@ -1,4 +1,4 @@
-require 'spec/spec_helper'
+require 'bdd/spec_helper'
 require 'roles/persisting'
 require 'persisters/memory_persister'
 

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'bdd/spec_helper'
 require 'roles/validating'
 
 describe Validating do

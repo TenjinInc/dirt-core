@@ -1,7 +1,7 @@
-require "rspec"
-require './lib/roles/role'
-require './lib/persisters/persister'
-require './lib/errors/transaction_error'
+require 'rspec'
+require 'roles/role'
+require 'persisters/persister'
+require 'errors/transaction_error'
 
 module Dirt
   describe Persister do

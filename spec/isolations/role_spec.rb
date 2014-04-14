@@ -1,5 +1,6 @@
-require "rspec"
-require './lib/roles/role'
+require 'bdd/spec_helper'
+require 'roles/role'
+require 'roles/persisting'
 
 module Dirt
   describe Role do

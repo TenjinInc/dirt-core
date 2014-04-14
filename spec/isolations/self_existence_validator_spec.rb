@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'bdd/spec_helper'
 require 'roles/validation/self_existence_validator'
 
 describe SelfExistenceValidator do
