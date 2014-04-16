@@ -37,7 +37,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activesupport
   factory_girl (~> 4.0)
   parallel_tests
   rspec

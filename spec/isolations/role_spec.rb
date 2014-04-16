@@ -1,4 +1,3 @@
-require 'bdd/spec_helper'
 require 'roles/role'
 require 'roles/persisting'
 

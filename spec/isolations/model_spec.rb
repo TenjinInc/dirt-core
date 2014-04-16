@@ -1,4 +1,3 @@
-require 'bdd/spec_helper'
 require 'models/model_behaviour'
 
 module Dirt

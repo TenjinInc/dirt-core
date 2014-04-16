@@ -1,4 +1,3 @@
-require 'bdd/spec_helper'
 require 'roles/validation/closure_validator'
 
 describe ClosureValidator do

@@ -1,4 +1,3 @@
-require 'bdd/spec_helper'
 require 'bdd/persister_spec_helper'
 require 'persisters/memory_persister'
 
