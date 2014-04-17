@@ -5,7 +5,7 @@ module Dirt
   describe MemoryPersister do
     let(:type) { :test }
     subject do
-      MemoryPersister.new(:some_type) do |*args|
+      MemoryPersister.new(:Mock) do |*args|
         double('Persisting', *args)
       end
     end

@@ -12,15 +12,15 @@ shared_examples_for(:persister) do
         subject.new.should_not be_nil
       end
     end
+
     context 'some args' do
       before(:each) do
-        @new_obj = subject.new(var1: 'value1', var2: 'value2')
+        @new_obj = subject.new(where_params)
       end
-      it 'should populate var1 with value1' do
-        @new_obj.var1.should == 'value1'
-      end
-      it 'should populate var2 with value2' do
-        @new_obj.var2.should == 'value2'
+      it 'should populate each parameter' do
+        where_params.each do |key, val|
+          @new_obj.send(key).should == val
+        end
       end
     end
   end
@@ -53,7 +53,7 @@ shared_examples_for(:persister) do
         let(:id) { 1 }
 
         it 'should raise an error' do
-          expect { subject.save(persisted, id) }.to raise_error(Dirt::MissingRecordError, "That some_type (id: 1) does not exist.")
+          expect { subject.save(persisted, id) }.to raise_error(Dirt::MissingRecordError, "That #{persisted.class.to_s.demodulize} (id: 1) does not exist.")
         end
       end
     end
@@ -78,7 +78,7 @@ shared_examples_for(:persister) do
       let(:id) { 1 }
 
       it 'should raise an error' do
-        expect { subject.load(id) }.to raise_error(Dirt::MissingRecordError, "That some_type (id: #{id}) does not exist.")
+        expect { subject.load(id) }.to raise_error(Dirt::MissingRecordError, "That #{persisted.class.to_s.demodulize} (id: #{id}) does not exist.")
       end
     end
   end
