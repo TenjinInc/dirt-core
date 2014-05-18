@@ -172,9 +172,10 @@ shared_examples_for(:persister) do
     describe 'relation returned' do
       let(:relation) { subject.where(where_params) }
 
-      it 'should respond to where' do
-        relation.should respond_to(:where)
-      end
+      # This is true of ActiveRecord relations, but not of DataMapper collections.
+      # it 'should respond to where' do
+      #   relation.should respond_to(:where)
+      # end
 
       it 'should respond to first' do
         relation.should respond_to(:first)
