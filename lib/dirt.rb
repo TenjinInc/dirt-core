@@ -1,6 +1,8 @@
 require 'persisters/persister'
 require 'persisters/memory_persister'
 
+require 'contexts/context'
+
 require 'models/model_behaviour'
 
 require 'roles/persisting'
