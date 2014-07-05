@@ -16,4 +16,16 @@ describe Dirt::Context do
       Dirt::Context.run(args)
     end
   end
+
+  describe '#initialize' do
+    it 'should accept no param' do
+      Dirt::Context.new()
+    end
+
+    it 'should accept params' do
+      args = double('params')
+
+      Dirt::Context.new(args)
+    end
+  end
 end

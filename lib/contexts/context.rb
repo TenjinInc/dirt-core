@@ -5,7 +5,7 @@ module Dirt
     end
 
     # Override and save state here.
-    def initialize(args)
+    def initialize(*args)
     end
 
     # Override to perform the actual command
