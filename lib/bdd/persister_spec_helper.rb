@@ -90,7 +90,7 @@ shared_examples_for(:persister) do
       let(:id) { subject.save(persisted).id }
 
       it 'should return true' do
-        subject.delete(id).should be_true
+        subject.delete(id).should == OpenStruct.new(persisted.to_hash.merge(id: id))
       end
     end
 
@@ -98,7 +98,7 @@ shared_examples_for(:persister) do
       let(:id) { 1 }
 
       it 'should return false' do
-        subject.delete(id).should be_false
+        subject.delete(id).should be nil
       end
     end
   end
@@ -110,7 +110,7 @@ shared_examples_for(:persister) do
       let(:id) { subject.save(persisted).id }
 
       it 'should return true' do
-        subject.exists?(id).should be_true
+        subject.exists?(id).should == true
       end
     end
 
@@ -118,7 +118,7 @@ shared_examples_for(:persister) do
       let(:id) { 1 }
 
       it 'should return true' do
-        subject.exists?(id).should be_false
+        subject.exists?(id).should == false
       end
     end
   end
@@ -158,9 +158,11 @@ shared_examples_for(:persister) do
     it { should respond_to(:where).with(1).argument }
 
     it 'should return only matching results' do
-      subject.where(where_params).all? do |data|
+      all = subject.where(where_params).all? do |data|
         where_params.all? { |key, value| data.send(key) == value }
-      end.should be_true
+      end
+
+      all.should be_true
     end
 
     it 'should the correct matching results' do

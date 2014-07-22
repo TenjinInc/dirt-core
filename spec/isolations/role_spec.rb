@@ -26,7 +26,7 @@ module Dirt
         it 'should call the method on the decorated object' do
           decorated.should_not_receive(:test_method)
 
-          expect { subject.method_missing(:test_method, [], nil) }.to raise_error(NoMethodError)
+          expect { subject.method_missing(:test_method, [], nil) }.to raise_error(NameError)
         end
       end
     end

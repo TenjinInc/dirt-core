@@ -61,7 +61,7 @@ module Dirt
           end
         end
 
-        subject.==(other).should be true
+        subject.==(other).should == true
       end
     end
   end

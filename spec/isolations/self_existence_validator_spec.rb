@@ -5,10 +5,10 @@ describe SelfExistenceValidator do
   let(:persister) { double('persister') }
   let(:decorated) { double('decorated') }
 
-  subject { SelfExistenceValidator.new(RSpec::Mocks::Mock, id) }
+  subject { SelfExistenceValidator.new(RSpec::Mocks::TestDouble, id) }
 
   before(:each) do
-    Persister.for(RSpec::Mocks::Mock, persister)
+    Persister.for(RSpec::Mocks::TestDouble, persister)
   end
 
   after(:each) do
