@@ -1,4 +1,4 @@
-require 'roles/validating'
+require './spec/isolations/spec_helper'
 
 describe Validating do
   let(:validator1) { double('validator') }

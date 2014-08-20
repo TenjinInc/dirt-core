@@ -1,4 +1,4 @@
-require 'roles/validation/closure_validator'
+require './spec/isolations/spec_helper'
 
 describe ClosureValidator do
   let(:expected_validity) { double('validity') }

@@ -1,4 +1,4 @@
-require 'dirt'
+require './spec/isolations/spec_helper'
 
 describe Dirt::Context do
   describe '#run' do

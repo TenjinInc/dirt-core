@@ -1,5 +1,4 @@
-require 'roles/persisting'
-require 'persisters/memory_persister'
+require './spec/isolations/spec_helper'
 
 module Dirt
 

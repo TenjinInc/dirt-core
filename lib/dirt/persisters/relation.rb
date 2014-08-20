@@ -1,5 +1,5 @@
 module Dirt
-  require 'persisters/memory_persister'
+  require 'dirt/persisters/memory_persister'
 
   class Relation < MemoryPersister
     @records = []

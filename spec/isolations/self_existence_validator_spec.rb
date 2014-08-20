@@ -1,4 +1,4 @@
-require 'roles/validation/self_existence_validator'
+require './spec/isolations/spec_helper'
 
 describe SelfExistenceValidator do
   let(:id) { double('id') }

@@ -1,4 +1,4 @@
-require 'roles/validation/existence_validator'
+require './spec/isolations/spec_helper'
 
 describe ExistenceValidator do
   let(:persister) { double('persister') }

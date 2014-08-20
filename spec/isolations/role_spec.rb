@@ -1,5 +1,4 @@
-require 'roles/role'
-require 'roles/persisting'
+require './spec/isolations/spec_helper'
 
 module Dirt
   describe Role do

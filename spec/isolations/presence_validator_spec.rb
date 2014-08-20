@@ -1,4 +1,4 @@
-require 'roles/validation/presence_validator'
+require './spec/isolations/spec_helper'
 
 describe PresenceValidator do
   let(:decorated) { double('decorated', test_property: nil) }

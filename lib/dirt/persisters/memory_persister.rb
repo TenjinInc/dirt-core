@@ -1,5 +1,5 @@
 module Dirt
-  require 'errors/missing_record_error'
+  require 'dirt/errors/missing_record_error'
   require 'ostruct'
 
   # An in-memory implementation of persistence.
@@ -82,5 +82,5 @@ module Dirt
   end
 
 # This must be at the bottom to work around the circular dependency with Relation.
-  require 'persisters/relation'
+  require 'dirt/persisters/relation'
 end

@@ -1,4 +1,4 @@
-require 'models/model_behaviour'
+require './spec/isolations/spec_helper'
 
 module Dirt
   describe ModelBehaviour do

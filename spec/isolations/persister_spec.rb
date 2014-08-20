@@ -1,7 +1,4 @@
-require 'rspec'
-require 'roles/role'
-require 'persisters/persister'
-require 'errors/transaction_error'
+require './spec/isolations/spec_helper'
 
 module Dirt
   describe Persister do

@@ -1,5 +1,5 @@
-require 'bdd/persister_spec_helper'
-require 'persisters/memory_persister'
+require 'dirt/bdd/persister_spec_helper'
+require './spec/isolations/spec_helper'
 
 module Dirt
   describe MemoryPersister do

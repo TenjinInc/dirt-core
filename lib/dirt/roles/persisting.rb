@@ -1,5 +1,5 @@
-require 'roles/role'
-require 'persisters/persister'
+require 'dirt/roles/role'
+require 'dirt/persisters/persister'
 
 # Role for adding persistability to model objects.
 class Persisting < Dirt::Role
