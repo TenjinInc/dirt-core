@@ -10,11 +10,11 @@ module Dirt
     # Attempts to run the missing method on the decorated object before exploding as normal,
     # with a light tingling sensation.
     def method_missing(method, *args, &block)
-      if @decorated.respond_to?(method)
+      # if @decorated.respond_to?(method)
         @decorated.send(method, *args, &block)
-      else
-        super
-      end
+      # else
+      #   super
+      # end
     end
 
     def class

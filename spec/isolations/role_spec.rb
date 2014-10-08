@@ -46,9 +46,9 @@ module Dirt
         before(:each) { decorated.stub(:respond_to?).and_return(false) }
 
         it 'should call the method on the decorated object' do
-          decorated.should_not_receive(:test_method)
+          decorated.should_receive(:test_method)
 
-          expect { subject.method_missing(:test_method, [], nil) }.to raise_error(NameError)
+          subject.method_missing(:test_method, [], nil)
         end
       end
     end
