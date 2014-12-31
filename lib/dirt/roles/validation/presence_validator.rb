@@ -16,6 +16,6 @@ class PresenceValidator
   end
 
   def error_message(validated)
-    "#{validated.class.to_s.demodulize} #{@property} must be provided."
+    "#{validated.class.to_s.demodulize} #{@property.to_s.gsub('_', ' ').downcase} must be provided."
   end
 end

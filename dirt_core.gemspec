@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name         = 'dirt-core'
-  s.version      = '2.2.2'
+  s.version      = '2.2.3'
   s.date         = Time.now.strftime('%Y-%m-%d')
   s.summary      = 'DCI Framework for Ruby'
   s.description  = 'Provides a convenient basis to begin creating DCI style applications. '
